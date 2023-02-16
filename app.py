@@ -5,13 +5,11 @@ from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import pandas as pd
 
-
 terr2 = pd.read_csv('database.csv')
 region = terr2['DEPARTAMENTO'].unique()
 
 location1 = terr2[['MUNICIPIO', 'latitude', 'longitude']]
 list_locations = location1.set_index('MUNICIPIO')[['latitude', 'longitude']]
-
 zoom_min, zoom_max, zoom0 = 1, 18, 6 
 
 app = dash.Dash(__name__, )
