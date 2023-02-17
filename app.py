@@ -5,12 +5,14 @@ from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import pandas as pd
 
+
 terr2 = pd.read_csv('database.csv')
 region = terr2['DEPARTAMENTO'].unique()
 
 location1 = terr2[['MUNICIPIO', 'latitude', 'longitude']]
 list_locations = location1.set_index('MUNICIPIO')[['latitude', 'longitude']]
-zoom_min, zoom_max, zoom0 = 1, 18, 6 
+
+zoom_min, zoom_max, zoom0 = 1, 18, 6  # min/max zoom levels might depend on the tiles used
 
 app = dash.Dash(__name__, )
 app.layout = html.Div([
@@ -60,7 +62,7 @@ html.Div([
         ], className = "six column", id = "title")
 
     ], id = "header", className = "row flex-display", style = {"margin-bottom": "25px"}),
-  
+    
     html.Div([
         html.Div([
             html.P('Seleccione Departamento:', className = 'fix_label', style = {'color': 'white'}),
@@ -140,9 +142,10 @@ def get_municipio_value(w_municipios):
 
 @app.callback(
     Output('clasificacion_txt', component_property='children'),
-    Input('w_municipios', 'value'))
-def get_clasificacion_value(w_municipios):
-    terr5 = terr2[terr2['MUNICIPIO'] == w_municipios]
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
     k =terr5['Clasificac'].values
     thestring = ""
     for i in range(0,len(k)):
