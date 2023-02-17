@@ -140,10 +140,9 @@ def get_municipio_value(w_municipios):
 
 @app.callback(
     Output('clasificacion_txt', component_property='children'),
-    Input('w_provincias', 'value'),
     Input('w_municipios', 'value'))
-def get_clasificacion_value(w_municipios,w_provincias):
-    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+def get_clasificacion_value(w_municipios):
+    terr5 = terr2[terr2['MUNICIPIO'] == w_municipios]
     k =terr5['Clasificac'].values
     thestring = ""
     for i in range(0,len(k)):
