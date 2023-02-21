@@ -185,7 +185,7 @@ def update_graph(w_provincias, w_municipios):
         'data': [
                  go.Bar(
                     y = ['Acceso a energía eléctrica'],
-                    x = round(terr8['_Acceso.en']*100,0),orientation='h',
+                    x = round(terr8['_Acceso.en']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a energía eléctrica',
@@ -193,7 +193,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                   go.Bar(
                     y = ['Acceso a la Vivienda'],
-                    x = round(terr8['_Acceso.vi']*100,0),orientation='h',
+                    x = round(terr8['_Acceso.vi']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a la Vivienda',
@@ -201,7 +201,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Acceso a educación'],
-                    x = round(terr8['_Acceso.ed']*100,0),orientation='h',
+                    x = round(terr8['_Acceso.ed']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a educación',
@@ -209,7 +209,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Acceso a servicio de salud'],
-                    x = round(terr8['_Acceso.se']*100,0),orientation='h',
+                    x = round(terr8['_Acceso.se']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a servicio de salud',
@@ -217,7 +217,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Acceso a servicio de agua'],
-                    x = round(terr8['_Acceso.h2o']*100,0),orientation='h',
+                    x = round(terr8['_Acceso.h2o']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a servicio de agua',
@@ -225,7 +225,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                   go.Bar(
                     y = ['Restricciones a actividades productivas'],
-                    x = round(terr8['_Restricci']*100,0),orientation='h',
+                    x = round(terr8['_Restricci']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Restricciones a actividades productivas',
@@ -233,7 +233,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Uso limitado y restringido'],
-                    x = round(terr8['_Uso.limit']*100,0),orientation='h',
+                    x = round(terr8['_Uso.limit']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Uso limitado y restringido',
@@ -241,7 +241,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                   go.Bar(
                     y = ['Aptitud Forestal'],
-                    x = round(terr8['_Aptitud.f']*100,0),orientation='h',
+                    x = round(terr8['_Aptitud.f']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Aptitud Forestal',
@@ -249,7 +249,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Agrosivopastoril'],
-                    x = round(terr8['_Agrosilvo']*100,0),orientation='h',
+                    x = round(terr8['_Agrosilvo']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agrosivopastoril',
@@ -257,7 +257,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Agropecuario extensivo'],
-                    x = round(terr8['_Agropec_1']*100,0),orientation='h',
+                    x = round(terr8['_Agropec_1']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agropecuario extensivo',
@@ -265,7 +265,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Agropecuario intensivo'],
-                    x = round(terr8['_Agropecua']*100,0),orientation='h',
+                    x = round(terr8['_Agropecua']*100,2),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agropecuario intensivo',
@@ -273,14 +273,14 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Turismo'],
-                    x = round(terr8['Turismo']*100,0),
+                    x = round(terr8['Turismo']*100,2),
                     orientation='h',
                      textposition = 'auto',
                      name = 'Turismo',
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Piscícol']*100,0),
+                    x = round(terr8['Piscícol']*100,2),
                     y = ['Psicola'],
                     orientation='h',
                      textposition = 'auto',
@@ -288,7 +288,7 @@ def update_graph(w_provincias, w_municipios):
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Minero']*100,0),
+                    x = round(terr8['Minero']*100,2),
                     y = ['Minero'],
                     orientation='h',
                      textposition = 'auto',
@@ -296,7 +296,7 @@ def update_graph(w_provincias, w_municipios):
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Aptitud.s']*100,0),
+                    x = round(terr8['Aptitud.s']*100,2),
                     y = ['Aptitud de suelos'],
                     orientation='h',
                      textposition = 'auto',
@@ -304,7 +304,7 @@ def update_graph(w_provincias, w_municipios):
                      marker = dict(color = 'yellow'),
                  ),
                  go.Bar(
-                    x = round(terr8['Abundancia']*100,0),
+                    x = round(terr8['Abundancia']*100,2),
                     y = ['Abundancia recursos hidricos'],
                     textposition = 'auto',
                      name = 'Abundancia recursos hidricos',
@@ -312,7 +312,7 @@ def update_graph(w_provincias, w_municipios):
                      orientation='h',
                  ),
                  go.Bar(
-                    x = round(terr8['Riqueza.e']*100,0),
+                    x = round(terr8['Riqueza.e']*100,2),
                     y = ['Riqueza de especies'],
                     textposition = 'auto',
                      name = 'Riqueza de especies',
@@ -320,7 +320,7 @@ def update_graph(w_provincias, w_municipios):
                      orientation='h',
                  ),
                  go.Bar(
-                    x = round(terr8['Captura.c']*100,0) ,
+                    x = round(terr8['Captura.c']*100,2) ,
                     y = ['captura carbono biomasa'],
                     textposition = 'auto',
                      name = 'captura carbono biomasa',
@@ -348,39 +348,8 @@ def update_graph(w_provincias, w_municipios):
                 'size': 20},
             hovermode = 'y',
 
-            xaxis = dict(title = '<b>Porcentaje</b>',
-                         tick0 = 0,
-                         dtick = 1,
-                         color = 'white',
-                         showline = True,
-                         showgrid = True,
-                         showticklabels = True,
-                         linecolor = 'white',
-                         linewidth = 2,
-                         ticks = 'outside',
-                         tickfont = dict(
-                             family = 'Arial',
-                             size = 15,
-                             color = 'white'
-                         )
-                         ),
-
-            yaxis = dict(title = '',
-                         color = 'white',
-                         showline = True,
-                         showgrid = True,
-                         showticklabels = True,
-                         linecolor = 'white',
-                         linewidth = 2,
-                         ticks = 'outside',
-                         tickfont = dict(
-                             family = 'Arial',
-                             size = 8,
-                             color = 'white'
-                         )
-                         ),
             legend = {
-                'orientation': 'v',
+                'orientation': 'h',
                 'bgcolor': '#010915',
                 'xanchor': 'center', 'x': 0.5, 'y': 0.3},
             font = dict(
