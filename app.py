@@ -38,7 +38,7 @@ html.Div([
                          "margin-bottom": "25px",
                      },
                      )
-        ], className="one-half column", id="title"),
+        ], className="one-half column", id="title3"),
 
         html.Div([
           html.Img(src=app.get_asset_url('giz.png'),
@@ -52,14 +52,14 @@ html.Div([
 
         ], className="one-third column", id='title1'),
 
-    ], id="header", className="row flex-display", style={"margin-bottom": "25px"}),
+    ], id="header2", className="row flex-display", style={"margin-bottom": "25px"}),
     html.Div([
         html.Div([
             html.Div([
                 html.H3('MÓDULO DEL INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 
                 style = {"margin-bottom": "0px", 'color': 'black'}),
             ]),
-        ], className = "six column", id = "title")
+        ], className = "six column", id = "title4")
 
     ], id = "header", className = "row flex-display", style = {"margin-bottom": "25px"}),
     
@@ -96,6 +96,7 @@ html.Div([
                          options = [], className = 'dcc_compon'),
             html.H6('Resultados', style = {"margin-top": "0px", 'color': 'white','size': 10}),
             html.H6(id='clasificacion_txt', style = {"margin-top": "0px", 'color': 'white','size': 10}),
+            html.Button('imprimir Pdf', id='run'),
         ], className = "create_container three columns"),
              html.Div([
                 dcc.Graph(id = 'bar_line_1',
@@ -183,146 +184,154 @@ def update_graph(w_provincias, w_municipios):
     return {
         'data': [
                  go.Bar(
-                    x = ['Acceso a energía eléctrica'],
-                    y = terr8['_Acceso.en'],
+                    y = ['Acceso a energía eléctrica'],
+                    x = round(terr8['_Acceso.en']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a energía eléctrica',
                      marker = dict(color = '#9C0C38'),
                  ),
                   go.Bar(
-                    x = ['Acceso a la Vivienda'],
-                    y = terr8['_Acceso.vi'],
+                    y = ['Acceso a la Vivienda'],
+                    x = round(terr8['_Acceso.vi']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a la Vivienda',
                      marker = dict(color = '#9C0C38'),
                  ),
                  go.Bar(
-                    x = ['Acceso a educación'],
-                    y = terr8['_Acceso.ed'],
+                    y = ['Acceso a educación'],
+                    x = round(terr8['_Acceso.ed']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a educación',
                      marker = dict(color = '#9C0C38'),
                  ),
                  go.Bar(
-                    x = ['Acceso a servicio de salud'],
-                    y = terr8['_Acceso.se'],
+                    y = ['Acceso a servicio de salud'],
+                    x = round(terr8['_Acceso.se']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a servicio de salud',
                      marker = dict(color = '#9C0C38'),
                  ),
                  go.Bar(
-                    x = ['Acceso a servicio de agua'],
-                    y = terr8['_Acceso.h2o'],
+                    y = ['Acceso a servicio de agua'],
+                    x = round(terr8['_Acceso.h2o']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a servicio de agua',
                      marker = dict(color = '#9C0C38'),
                  ),
                   go.Bar(
-                    x = ['Restricciones a actividades productivas'],
-                    y = terr8['_Restricci'],
+                    y = ['Restricciones a actividades productivas'],
+                    x = round(terr8['_Restricci']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Restricciones a actividades productivas',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
-                    x = ['Uso limitado y restringido'],
-                    y = terr8['_Uso.limit'],
+                    y = ['Uso limitado y restringido'],
+                    x = round(terr8['_Uso.limit']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Uso limitado y restringido',
                      marker = dict(color = 'green'),
                  ),
                   go.Bar(
-                    x = ['Aptitud Forestal'],
-                    y = terr8['_Aptitud.f'],
+                    y = ['Aptitud Forestal'],
+                    x = round(terr8['_Aptitud.f']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Aptitud Forestal',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
-                    x = ['Agrosivopastoril'],
-                    y = terr8['_Agrosilvo'],
+                    y = ['Agrosivopastoril'],
+                    x = round(terr8['_Agrosilvo']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agrosivopastoril',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
-                    x = ['Agropecuario extensivo'],
-                    y = terr8['_Agropec_1'],
+                    y = ['Agropecuario extensivo'],
+                    x = round(terr8['_Agropec_1']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agropecuario extensivo',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
-                    x = ['Agropecuario intensivo'],
-                    y = terr8['_Agropecua'],
+                    y = ['Agropecuario intensivo'],
+                    x = round(terr8['_Agropecua']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agropecuario intensivo',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
-                    x = ['Turismo'],
-                    y = terr8['Turismo'],
-
+                    y = ['Turismo'],
+                    x = round(terr8['Turismo']*100,0),
+                    orientation='h',
                      textposition = 'auto',
                      name = 'Turismo',
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = ['Psicola'],
-                    y = terr8['Piscícol'],
-
+                    x = round(terr8['Piscícol']*100,0),
+                    y = ['Psicola'],
+                    orientation='h',
                      textposition = 'auto',
                      name = 'Psicola',
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = ['Minero'],
-                    y = terr8['Minero'],
-
+                    x = round(terr8['Minero']*100,0),
+                    y = ['Minero'],
+                    orientation='h',
                      textposition = 'auto',
                      name = 'Minero',
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = ['Aptitud de suelos'],
-                    y = terr8['Aptitud.s'],
-
+                    x = round(terr8['Aptitud.s']*100,0),
+                    y = ['Aptitud de suelos'],
+                    orientation='h',
                      textposition = 'auto',
                      name = 'Aptitud de suelos',
                      marker = dict(color = 'yellow'),
                  ),
                  go.Bar(
-                    x = ['Abundancia recursos hidricos'],
-                    y = terr8['Abundancia'],
+                    x = round(terr8['Abundancia']*100,0),
+                    y = ['Abundancia recursos hidricos'],
                     textposition = 'auto',
                      name = 'Abundancia recursos hidricos',
                      marker = dict(color = 'yellow'),
+                     orientation='h',
                  ),
                  go.Bar(
-                    x = ['Riqueza de especies'],
-                    y = terr8['Riqueza.e'],
+                    x = round(terr8['Riqueza.e']*100,0),
+                    y = ['Riqueza de especies'],
                     textposition = 'auto',
                      name = 'Riqueza de especies',
                      marker = dict(color = 'yellow'),
+                     orientation='h',
                  ),
                  go.Bar(
-                    x = ['captura carbono biomasa'],
-                    y = terr8['Captura.c'],
+                    x = round(terr8['Captura.c']*100,0) ,
+                    y = ['captura carbono biomasa'],
                     textposition = 'auto',
                      name = 'captura carbono biomasa',
                      marker = dict(color = 'yellow'),
+                     orientation='h',
                  ),
+                # go.Bar(
+                #     x=[20, 14, 23],
+                #     y=['giraffes', 'orangutans', 'monkeys'],
+                #     orientation='h'
+                # ),
             ],
 
         'layout': go.Layout(
@@ -337,11 +346,26 @@ def update_graph(w_provincias, w_municipios):
             titlefont = {
                 'color': 'white',
                 'size': 20},
-            hovermode = 'x',
+            hovermode = 'y',
 
-            xaxis = dict(title = '',
+            xaxis = dict(title = '<b>Porcentaje</b>',
                          tick0 = 0,
                          dtick = 1,
+                         color = 'white',
+                         showline = True,
+                         showgrid = True,
+                         showticklabels = True,
+                         linecolor = 'white',
+                         linewidth = 2,
+                         ticks = 'outside',
+                         tickfont = dict(
+                             family = 'Arial',
+                             size = 15,
+                             color = 'white'
+                         )
+                         ),
+
+            yaxis = dict(title = '',
                          color = 'white',
                          showline = True,
                          showgrid = True,
@@ -355,25 +379,10 @@ def update_graph(w_provincias, w_municipios):
                              color = 'white'
                          )
                          ),
-
-            yaxis = dict(title = '<b>Porcentaje</b>',
-                         color = 'white',
-                         showline = True,
-                         showgrid = True,
-                         showticklabels = True,
-                         linecolor = 'white',
-                         linewidth = 2,
-                         ticks = 'outside',
-                         tickfont = dict(
-                             family = 'Arial',
-                             size = 12,
-                             color = 'white'
-                         )
-                         ),
             legend = {
-                'orientation': 'h',
+                'orientation': 'v',
                 'bgcolor': '#010915',
-                'xanchor': 'center', 'x': 0.5, 'y': -0.3},
+                'xanchor': 'center', 'x': 0.5, 'y': 0.3},
             font = dict(
                 family = "sans-serif",
                 size = 12,
