@@ -62,7 +62,6 @@ html.Div([
         ], className = "six column", id = "title4")
 
     ], id = "header", className = "row flex-display", style = {"margin-bottom": "25px"}),
-    
     html.Div([
         html.Div([
             html.P('Seleccione Departamento:', className = 'fix_label', style = {'color': 'white'}),
@@ -75,8 +74,11 @@ html.Div([
                          placeholder = 'Seleccione Departamento',
                          options = [{'label': c, 'value': c}
                                     for c in region], className = 'dcc_compon'),
-
-            html.P('Seleccione Provincia:', className = 'fix_label', style = {'color': 'white'}),
+        ],
+            className="create_container one-half column",
+        ),
+        html.Div([
+             html.P('Seleccione Provincia:', className = 'fix_label', style = {'color': 'white'}),
             dcc.Dropdown(id = 'w_provincias',
                          multi = False,
                          clearable = True,
@@ -85,8 +87,10 @@ html.Div([
                          value = 'Ingavi',
                          placeholder = 'Seleccione Provincia',
                          options = [], className = 'dcc_compon'),
+        ], className="create_container one-half column", id="title3"),
 
-            html.P('Seleccione Municipio:', className = 'fix_label', style = {'color': 'white'}),
+        html.Div([
+         html.P('Seleccione Municipio:', className = 'fix_label', style = {'color': 'white'}),
             dcc.Dropdown(id = 'w_municipios',
                          multi = False,
                          clearable = True,
@@ -94,10 +98,20 @@ html.Div([
                          style = {'display': True},
                          placeholder = 'Seleccione Municipio',
                          options = [], className = 'dcc_compon'),
+
+        ], className="create_container one-half column", id='title1'),
+
+    ], id="header5", className="row flex-display", style={"margin-bottom": "25px"}),
+    html.Div([
+        html.Div([
             html.H6('Resultados', style = {"margin-top": "0px", 'color': 'white','size': 10}),
             html.H6(id='clasificacion_txt', style = {"margin-top": "0px", 'color': 'white','size': 10}),
             html.Button('imprimir Pdf', id='run'),
-        ], className = "create_container three columns"),
+        ], className = "create_container  columns"),
+
+    ], id = "header3", className = "row flex-display", style = {"margin-bottom": "25px"}),
+    html.Div([
+        
              html.Div([
                 dcc.Graph(id = 'bar_line_1',
                         config = {'displayModeBar': 'hover'}),
@@ -107,7 +121,7 @@ html.Div([
            html.Div([
                 dcc.Graph(id = 'map_1',
                         config = {'displayModeBar': 'hover'}),
-            ], className = "create_container four columns"),
+            ], className = "create_container seven columns"),
 
 
     ], className = "row flex-display"),
@@ -185,7 +199,7 @@ def update_graph(w_provincias, w_municipios):
         'data': [
                  go.Bar(
                     y = ['Acceso a energía eléctrica'],
-                    x = round(terr8['_Acceso.en']*100,2),orientation='h',
+                    x = round(terr8['_Acceso.en']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a energía eléctrica',
@@ -193,7 +207,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                   go.Bar(
                     y = ['Acceso a la Vivienda'],
-                    x = round(terr8['_Acceso.vi']*100,2),orientation='h',
+                    x = round(terr8['_Acceso.vi']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a la Vivienda',
@@ -201,7 +215,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Acceso a educación'],
-                    x = round(terr8['_Acceso.ed']*100,2),orientation='h',
+                    x = round(terr8['_Acceso.ed']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a educación',
@@ -209,7 +223,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Acceso a servicio de salud'],
-                    x = round(terr8['_Acceso.se']*100,2),orientation='h',
+                    x = round(terr8['_Acceso.se']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a servicio de salud',
@@ -217,7 +231,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Acceso a servicio de agua'],
-                    x = round(terr8['_Acceso.h2o']*100,2),orientation='h',
+                    x = round(terr8['_Acceso.h2o']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Acceso a servicio de agua',
@@ -225,7 +239,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                   go.Bar(
                     y = ['Restricciones a actividades productivas'],
-                    x = round(terr8['_Restricci']*100,2),orientation='h',
+                    x = round(terr8['_Restricci']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Restricciones a actividades productivas',
@@ -233,7 +247,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Uso limitado y restringido'],
-                    x = round(terr8['_Uso.limit']*100,2),orientation='h',
+                    x = round(terr8['_Uso.limit']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Uso limitado y restringido',
@@ -241,7 +255,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                   go.Bar(
                     y = ['Aptitud Forestal'],
-                    x = round(terr8['_Aptitud.f']*100,2),orientation='h',
+                    x = round(terr8['_Aptitud.f']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Aptitud Forestal',
@@ -249,7 +263,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Agrosivopastoril'],
-                    x = round(terr8['_Agrosilvo']*100,2),orientation='h',
+                    x = round(terr8['_Agrosilvo']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agrosivopastoril',
@@ -257,7 +271,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Agropecuario extensivo'],
-                    x = round(terr8['_Agropec_1']*100,2),orientation='h',
+                    x = round(terr8['_Agropec_1']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agropecuario extensivo',
@@ -265,7 +279,7 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Agropecuario intensivo'],
-                    x = round(terr8['_Agropecua']*100,2),orientation='h',
+                    x = round(terr8['_Agropecua']*100,0),orientation='h',
 
                      textposition = 'auto',
                      name = 'Agropecuario intensivo',
@@ -273,14 +287,14 @@ def update_graph(w_provincias, w_municipios):
                  ),
                  go.Bar(
                     y = ['Turismo'],
-                    x = round(terr8['Turismo']*100,2),
+                    x = round(terr8['Turismo']*100,0),
                     orientation='h',
                      textposition = 'auto',
                      name = 'Turismo',
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Piscícol']*100,2),
+                    x = round(terr8['Piscícol']*100,0),
                     y = ['Psicola'],
                     orientation='h',
                      textposition = 'auto',
@@ -288,7 +302,7 @@ def update_graph(w_provincias, w_municipios):
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Minero']*100,2),
+                    x = round(terr8['Minero']*100,0),
                     y = ['Minero'],
                     orientation='h',
                      textposition = 'auto',
@@ -296,7 +310,7 @@ def update_graph(w_provincias, w_municipios):
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Aptitud.s']*100,2),
+                    x = round(terr8['Aptitud.s']*100,0),
                     y = ['Aptitud de suelos'],
                     orientation='h',
                      textposition = 'auto',
@@ -304,7 +318,7 @@ def update_graph(w_provincias, w_municipios):
                      marker = dict(color = 'yellow'),
                  ),
                  go.Bar(
-                    x = round(terr8['Abundancia']*100,2),
+                    x = round(terr8['Abundancia']*100,0),
                     y = ['Abundancia recursos hidricos'],
                     textposition = 'auto',
                      name = 'Abundancia recursos hidricos',
@@ -312,7 +326,7 @@ def update_graph(w_provincias, w_municipios):
                      orientation='h',
                  ),
                  go.Bar(
-                    x = round(terr8['Riqueza.e']*100,2),
+                    x = round(terr8['Riqueza.e']*100,0),
                     y = ['Riqueza de especies'],
                     textposition = 'auto',
                      name = 'Riqueza de especies',
@@ -320,7 +334,7 @@ def update_graph(w_provincias, w_municipios):
                      orientation='h',
                  ),
                  go.Bar(
-                    x = round(terr8['Captura.c']*100,2) ,
+                    x = round(terr8['Captura.c']*100,0) ,
                     y = ['captura carbono biomasa'],
                     textposition = 'auto',
                      name = 'captura carbono biomasa',
