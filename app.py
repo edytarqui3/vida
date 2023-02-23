@@ -6,6 +6,7 @@ import plotly.graph_objs as go
 import pandas as pd
 
 
+
 terr2 = pd.read_csv('database.csv')
 region = terr2['DEPARTAMENTO'].unique()
 
@@ -21,7 +22,7 @@ html.Div([
             html.Img(src=app.get_asset_url('logo01.png'),
                      id='mmaya-image',
                      style={
-                         "height": "150px",
+                         "height": "70px",
                          "width": "auto",
                          "margin-bottom": "25px",
                      },
@@ -33,24 +34,24 @@ html.Div([
              html.Img(src=app.get_asset_url('madre-tierra.png'),
                      id='madre-tierra-image',
                      style={
-                         "height": "150px",
+                         "height": "70px",
                          "width": "auto",
                          "margin-bottom": "25px",
                      },
                      )
-        ], className="one-half column", id="title3"),
+        ], className="one-half column", id="title9"),
 
         html.Div([
           html.Img(src=app.get_asset_url('giz.png'),
                      id='giz-image',
                      style={
-                         "height": "100px",
+                         "height": "70px",
                          "width": "auto",
                          "margin-bottom": "25px",
                      },
                      )
 
-        ], className="one-third column", id='title1'),
+        ], className="one-half column", id='title10'),
 
     ], id="header2", className="row flex-display", style={"margin-bottom": "25px"}),
     html.Div([
@@ -173,28 +174,6 @@ def get_clasificacion_value(w_provincias,w_municipios):
 def update_graph(w_provincias, w_municipios):
     terr6 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios) ]
     terr8 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)  ]
-    colores = ['lightslategray',] * 18
-    colores[0] = 'crimson'
-    colores[1] = 'crimson'
-    colores[2] = 'crimson'
-    colores[3] = 'crimson'
-    colores[4] = 'crimson'
-
-    colores[5] = 'green'
-    colores[6] = 'green'
-    colores[7] = 'green'
-    colores[8] = 'green'
-    colores[9] = 'green'
-    colores[10] = 'green'
-
-    colores[11] = 'blue'
-    colores[12] = 'blue'
-    colores[13] = 'blue'
-
-    colores[14] = '#F6F926'
-    colores[15] = '#F6F926'
-    colores[16] = '#F6F926'
-    colores[17] = '#F6F926'
     return {
         'data': [
                  go.Bar(
@@ -409,7 +388,17 @@ def update_graph(w_provincias, w_municipios):
             mapbox = dict(
                 accesstoken = 'pk.eyJ1IjoicXM2MjcyNTI3IiwiYSI6ImNraGRuYTF1azAxZmIycWs0cDB1NmY1ZjYifQ.I1VJ3KjeM-S613FLv3mtkw',  # Use mapbox token here
                 center = go.layout.mapbox.Center(lat = zoom_lat, lon = zoom_lon),
-                style='open-street-map',
+                 style="white-bg",
+                layers=[
+                    {
+                        "below": 'traces',
+                        "sourcetype": "raster",
+                        "sourceattribution": "United States Geological Survey",
+                        "source": [
+                            "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"
+                        ]
+                    }
+                ],
                 zoom = zoom
             ),
             autosize = True,
