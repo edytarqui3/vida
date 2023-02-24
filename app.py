@@ -126,7 +126,10 @@ html.Div([
                             config = {'displayModeBar': 'hover'}),
                 ], className = "create_container three columns"),
             html.Div([              
-                    dl.Map([dl.TileLayer(), dl.LayerGroup(id="layer")],
+                    dl.Map([
+                        dl.TileLayer(id="base-layer-id"), 
+                        dl.LayerGroup(id="layer")
+                        ],
                     id="map", style={'width': '100%', 'height': '100%', 'margin': "auto", "display": "block"}),
                 ], className = "create_container five columns"),
 
@@ -428,13 +431,18 @@ def update_mapa(w_provincias, w_municipios):
         dl.Map(style={'width': '100%', 'height': '100%'}, 
             center=[zoom_lat, zoom_lon], zoom=10, children=[
             dl.TileLayer(id="base-layer-id"),
+            dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares",
+                              activeColor="#214097", completedColor="#972158"),
+            dl.WMSTileLayer(url="http://siip.produccion.gob.bo:8080/geoserver/comAgrico/wms?service=WMS",
+                            layers="comAgrico:Riqueza_Especies_Biodiversidad", 
+                            format="image/png", transparent=True),
             # Marker with tool tip and popup
             # for i in range page_size:
             # create marker at i position long,lang
             dl.Marker(position=[zoom_lat, zoom_lon], children=[
                 dl.Popup([
                     html.H3('Indice de Caracterización de Vida: ' + terr3['porc_i.CSV'].astype(str) + ' %' ),
-                    html.P('<b>Municipio</b>: ' + terr3['MUNICIPIO'].astype(str) + '<br>')
+                    html.P('Municipio: ' + terr3['MUNICIPIO'].astype(str) + '')
                 ])
             ])
         ])
