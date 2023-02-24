@@ -16,6 +16,11 @@ location1 = terr2[['MUNICIPIO', 'latitude', 'longitude']]
 list_locations = location1.set_index('MUNICIPIO')[['latitude', 'longitude']]
 
 zoom_min, zoom_max, zoom0 = 1, 18, 6  # min/max zoom levels might depend on the tiles used
+keys = ["watercolor", "toner", "terrain"]
+url_template = "http://{{s}}.tile.stamen.com/{}/{{z}}/{{x}}/{{y}}.png"
+attribution = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ' \
+              '<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data ' \
+              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
 app = dash.Dash(__name__, )
 app.layout = html.Div([
@@ -119,19 +124,17 @@ html.Div([
                     dcc.Graph(id = 'bar_line_1',
                             config = {'displayModeBar': 'hover'}),
 
-                ], className = "create_container five columns"),
+                ], className = "create_container six columns"),
 
-            html.Div([
-                    dcc.Graph(id = 'map_1',
-                            config = {'displayModeBar': 'hover'}),
-                ], className = "create_container three columns"),
             html.Div([              
                     dl.Map([
-                        dl.TileLayer(id="base-layer-id"), 
-                        dl.LayerGroup(id="layer")
+                            dl.LayersControl(
+                                [dl.BaseLayer(dl.TileLayer(id="base-layer-id"),) ] +
+                                [dl.Overlay(dl.LayerGroup(id="layer"), name="markers", checked=True)]
+                            )
                         ],
                     id="map", style={'width': '100%', 'height': '100%', 'margin': "auto", "display": "block"}),
-                ], className = "create_container five columns"),
+                ], className = "create_container six columns"),
 
         ], className = "row flex-display"),
         html.Div([
@@ -365,58 +368,7 @@ def update_graph(w_provincias, w_municipios):
                 showlegend=False
         )
     }
-@app.callback(Output('map_1', 'figure'),
-              [Input('w_provincias', 'value')],
-              [Input('w_municipios', 'value')])
-def update_graph(w_provincias, w_municipios):
-    terr3 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios) ]
 
-    if w_municipios:
-        zoom = 7 
-        zoom_lat = float(terr3.latitude.astype(float).mean())
-        zoom_lon = float(terr3.longitude.astype(float).mean())
-
-    return {
-        'data': [go.Scattermapbox(
-            lon = [f'{x:,.000000f}' for x in terr3['longitude']],
-            lat = [f'{y:,.000000f}' for y in terr3['latitude']],
-            mode = 'markers',
-            marker = go.scattermapbox.Marker(
-                 size=25,
-                 color='red',
-            ),
-
-            hoverinfo = 'text',
-            hovertext =
-            '<b>Departamento</b>: ' + terr3['DEPARTAMENTO'].astype(str) + '<br>' +
-            '<b>Provincia</b>: ' + terr3['PROVINCIA'].astype(str) + '<br>' +
-            '<b>Municipio</b>: ' + terr3['MUNICIPIO'].astype(str) + '<br>' +
-            '<b>Indice de Caracterización de Vida</b>: ' + terr3['porc_i.CSV'].astype(str) + ' %<br>' +
-            '<b>Clasificacion</b>: ' + terr3['Clasificac'].astype(str) + '<br>'
-        )],
-
-        'layout': go.Layout(
-            margin = {"r": 0, "t": 0, "l": 0, "b": 0},
-            hovermode='closest',
-            mapbox = dict(
-                accesstoken = 'pk.eyJ1IjoicXM2MjcyNTI3IiwiYSI6ImNraGRuYTF1azAxZmIycWs0cDB1NmY1ZjYifQ.I1VJ3KjeM-S613FLv3mtkw',  # Use mapbox token here
-                center = go.layout.mapbox.Center(lat = zoom_lat, lon = zoom_lon),
-                 style="white-bg",
-                layers=[
-                    {
-                        "below": 'traces',
-                        "sourcetype": "raster",
-                        "sourceattribution": "United States Geological Survey",
-                        "source": [
-                            "https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryOnly/MapServer/tile/{z}/{y}/{x}"
-                        ]
-                    }
-                ],
-                zoom = zoom
-            ),
-            autosize = True,
-        )
-    }
 @app.callback(Output('map', 'children'),
               [Input('w_provincias', 'value')],
               [Input('w_municipios', 'value')])
@@ -430,21 +382,21 @@ def update_mapa(w_provincias, w_municipios):
     return [
         dl.Map(style={'width': '100%', 'height': '100%'}, 
             center=[zoom_lat, zoom_lon], zoom=10, children=[
-           dl.LayersControl(
-                [
-                    dl.BaseLayer(
-                    dl.TileLayer(id="base-layer-id"),
-                    dl.WMSTileLayer(url="http://siip.produccion.gob.bo:8080/geoserver/comAgrico/wms?service=WMS",
-                                    layers="comAgrico:Riqueza_Especies_Biodiversidad", 
-                                    format="image/png", transparent=True),)] +
-                [
-                    dl.Overlay(dl.LayerGroup(dl.Marker(position=[zoom_lat, zoom_lon], children=[
-                    dl.Popup([
-                            html.H3('Indice de Caracterización de Vida: ' + terr3['porc_i.CSV'].astype(str) + ' %' ),
-                            html.P('Municipio: ' + terr3['MUNICIPIO'].astype(str) + '')
-                        ])
-                    ])), name="markers", checked=True)]
-            )
+            dl.TileLayer(id="base-layer-id"),
+            dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares",
+                              activeColor="#214097", completedColor="#972158"),
+            dl.WMSTileLayer(url="http://siip.produccion.gob.bo:8080/geoserver/comAgrico/wms?service=WMS",
+                            layers="comAgrico:Riqueza_Especies_Biodiversidad", 
+                            format="image/png", transparent=True),
+            # Marker with tool tip and popup
+            # for i in range page_size:
+            # create marker at i position long,lang
+            dl.Marker(position=[zoom_lat, zoom_lon], children=[
+                dl.Popup([
+                    html.H3('Indice de Caracterización de Vida: ' + terr3['porc_i.CSV'].astype(str) + ' %' ),
+                    html.P('Municipio: ' + terr3['MUNICIPIO'].astype(str) + '')
+                ])
+            ])
         ])
     ]
 
