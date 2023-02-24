@@ -5,7 +5,9 @@ from dash.dependencies import Input, Output
 import plotly.graph_objs as go
 import pandas as pd
 
-
+import dash_leaflet as dl
+import dash_leaflet.express as dlx
+from dash_extensions.javascript import arrow_function
 
 terr2 = pd.read_csv('database.csv')
 region = terr2['DEPARTAMENTO'].unique()
@@ -105,27 +107,35 @@ html.Div([
     ], id="header5", className="row flex-display", style={"margin-bottom": "25px"}),
     html.Div([
         html.Div([
-            html.H6('Resultados', style = {"margin-top": "0px", 'color': 'white','size': 10}),
-            html.H6(id='clasificacion_txt', style = {"margin-top": "0px", 'color': 'white','size': 10}),
-            html.Button('imprimir Pdf', id='run'),
-        ], className = "create_container  columns"),
+                html.H6('Resultados', style = {"margin-top": "0px", 'color': 'white','size': 10}),
+                html.H6(id='clasificacion_txt', style = {"margin-top": "0px", 'color': 'white','size': 10}),
+                html.Button('imprimir Pdf', id='run'),
+            ], className = "create_container  columns"),
 
-    ], id = "header3", className = "row flex-display", style = {"margin-bottom": "25px"}),
-    html.Div([
-        
-             html.Div([
-                dcc.Graph(id = 'bar_line_1',
-                        config = {'displayModeBar': 'hover'}),
+        ], id = "header3", className = "row flex-display", style = {"margin-bottom": "25px"}),
+        html.Div([
+            
+                html.Div([
+                    dcc.Graph(id = 'bar_line_1',
+                            config = {'displayModeBar': 'hover'}),
 
-            ], className = "create_container five columns"),
+                ], className = "create_container five columns"),
 
-           html.Div([
-                dcc.Graph(id = 'map_1',
-                        config = {'displayModeBar': 'hover'}),
-            ], className = "create_container seven columns"),
+            html.Div([
+                    dcc.Graph(id = 'map_1',
+                            config = {'displayModeBar': 'hover'}),
+                ], className = "create_container three columns"),
+            html.Div([              
+                    dl.Map([dl.TileLayer(), dl.LayerGroup(id="layer")],
+                    id="map", style={'width': '100%', 'height': '100%', 'margin': "auto", "display": "block"}),
+                ], className = "create_container five columns"),
+
+        ], className = "row flex-display"),
+        html.Div([
+            
 
 
-    ], className = "row flex-display"),
+        ], className = "row flex-display"),
 
 
 
@@ -404,7 +414,31 @@ def update_graph(w_provincias, w_municipios):
             autosize = True,
         )
     }
+@app.callback(Output('map', 'children'),
+              [Input('w_provincias', 'value')],
+              [Input('w_municipios', 'value')])
+def update_mapa(w_provincias, w_municipios):
+    terr3 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios) ]
+    if w_municipios:
+        zoom = 7 
+        zoom_lat = float(terr3.latitude.astype(float).mean())
+        zoom_lon = float(terr3.longitude.astype(float).mean())
 
+    return [
+        dl.Map(style={'width': '100%', 'height': '100%'}, 
+            center=[zoom_lat, zoom_lon], zoom=10, children=[
+            dl.TileLayer(id="base-layer-id"),
+            # Marker with tool tip and popup
+            # for i in range page_size:
+            # create marker at i position long,lang
+            dl.Marker(position=[zoom_lat, zoom_lon], children=[
+                dl.Popup([
+                    html.H3('Indice de Caracterización de Vida: ' + terr3['porc_i.CSV'].astype(str) + ' %' ),
+                    html.P('<b>Municipio</b>: ' + terr3['MUNICIPIO'].astype(str) + '<br>')
+                ])
+            ])
+        ])
+    ]
 
 if __name__ == '__main__':
     app.run_server(debug = True)
