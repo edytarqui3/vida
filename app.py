@@ -122,9 +122,9 @@ html.Div([
             
                 html.Div([
                     dcc.Graph(id = 'bar_line_1',
-                            config = {'displayModeBar': 'hover'}),
+                            config = {'displayModeBar': False}),
 
-                ], className = "create_container six columns"),
+                ], className = "create_container seven columns"),
 
             html.Div([              
                     dl.Map([
@@ -134,7 +134,7 @@ html.Div([
                             )
                         ],
                     id="map", style={'width': '100%', 'height': '100%', 'margin': "auto", "display": "block"}),
-                ], className = "create_container six columns"),
+                ], className = "create_container five columns"),
 
         ], className = "row flex-display"),
         html.Div([
@@ -190,17 +190,15 @@ def get_clasificacion_value(w_provincias,w_municipios):
 def update_graph(w_provincias, w_municipios):
     terr6 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios) ]
     terr8 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)  ]
+    
     return {
         'data': [
                  go.Bar(
                     y = ['Acceso a energía eléctrica'],
                     x = round(terr8['_Acceso.en']*100,0),orientation='h',
 
-                    text=['Acceso a energía eléctrica'],
+                    text=round(terr8['_Acceso.en']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Acceso a energía eléctrica',
                      marker = dict(color = '#9C0C38'),
                  ),
@@ -208,11 +206,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Acceso a la Vivienda'],
                     x = round(terr8['_Acceso.vi']*100,0),orientation='h',
 
-                    text=['Acceso a la Vivienda'],
+                    text=round(terr8['_Acceso.vi']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Acceso a la Vivienda',
                      marker = dict(color = '#9C0C38'),
                  ),
@@ -220,11 +215,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Acceso a educación'],
                     x = round(terr8['_Acceso.ed']*100,0),orientation='h',
 
-                    text=['Acceso a educación'],
+                    text=round(terr8['_Acceso.ed']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Acceso a educación',
                      marker = dict(color = '#9C0C38'),
                  ),
@@ -232,11 +224,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Acceso a servicio de salud'],
                     x = round(terr8['_Acceso.se']*100,0),orientation='h',
 
-                    text=['Acceso a servicio de salud'],
+                    text=round(terr8['_Acceso.se']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Acceso a servicio de salud',
                      marker = dict(color = '#9C0C38'),
                  ),
@@ -244,11 +233,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Acceso a servicio de agua'],
                     x = round(terr8['_Acceso.h2o']*100,0),orientation='h',
 
-                    text=['Acceso a servicio de agua'],
+                    text=round(terr8['_Acceso.h2o']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Acceso a servicio de agua',
                      marker = dict(color = '#9C0C38'),
                  ),
@@ -256,11 +242,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Restricciones a actividades productivas'],
                     x = round(terr8['_Restricci']*100,0),orientation='h',
 
-                    text=['Restricciones a actividades productivas'],
+                    text=round(terr8['_Restricci']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Restricciones a actividades productivas',
                      marker = dict(color = 'green'),
                  ),
@@ -268,11 +251,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Uso limitado y restringido'],
                     x = round(terr8['_Uso.limit']*100,0),orientation='h',
 
-                    text=['Uso limitado y restringido'],
+                    text=round(terr8['_Uso.limit']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Uso limitado y restringido',
                      marker = dict(color = 'green'),
                  ),
@@ -280,11 +260,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Aptitud Forestal'],
                     x = round(terr8['_Aptitud.f']*100,0),orientation='h',
 
-                    text=['Aptitud Forestal'],
+                    text=round(terr8['_Aptitud.f']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Aptitud Forestal',
                      marker = dict(color = 'green'),
                  ),
@@ -292,11 +269,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Agrosivopastoril'],
                     x = round(terr8['_Agrosilvo']*100,0),orientation='h',
 
-                    text=['Agrosivopastoril'],
+                    text=round(terr8['_Agrosilvo']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Agrosivopastoril',
                      marker = dict(color = 'green'),
                  ),
@@ -304,11 +278,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Agropecuario extensivo'],
                     x = round(terr8['_Agropec_1']*100,0),orientation='h',
 
-                    text=['Agropecuario extensivo'],
+                    text=round(terr8['_Agropec_1']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Agropecuario extensivo',
                      marker = dict(color = 'green'),
                  ),
@@ -316,11 +287,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Agropecuario intensivo'],
                     x = round(terr8['_Agropecua']*100,0),orientation='h',
 
-                    text=['Agropecuario intensivo'],
+                    text=round(terr8['_Agropecua']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Agropecuario intensivo',
                      marker = dict(color = 'green'),
                  ),
@@ -328,11 +296,8 @@ def update_graph(w_provincias, w_municipios):
                     y = ['Turismo'],
                     x = round(terr8['Turismo']*100,0),
                     orientation='h',
-                    text=['Turismo'],
+                    text=round(terr8['Turismo']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Turismo',
                      marker = dict(color = 'blue'),
                  ),
@@ -340,11 +305,8 @@ def update_graph(w_provincias, w_municipios):
                     x = round(terr8['Piscícol']*100,0),
                     y = ['Psicola'],
                     orientation='h',
-                    text=['Psicola'],
+                    text=round(terr8['Piscícol']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Psicola',
                      marker = dict(color = 'blue'),
                  ),
@@ -352,11 +314,8 @@ def update_graph(w_provincias, w_municipios):
                     x = round(terr8['Minero']*100,0),
                     y = ['Minero'],
                     orientation='h',
-                    text=['Minero'],
+                    text=round(terr8['Minero']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Minero',
                      marker = dict(color = 'blue'),
                  ),
@@ -364,22 +323,16 @@ def update_graph(w_provincias, w_municipios):
                     x = round(terr8['Aptitud.s']*100,0),
                     y = ['Aptitud de suelos'],
                     orientation='h',
-                    text=['Aptitud de suelos'],
+                    text=round(terr8['Aptitud.s']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Aptitud de suelos',
                      marker = dict(color = 'yellow'),
                  ),
                  go.Bar(
                     x = round(terr8['Abundancia']*100,0),
                     y = ['Abundancia recursos hidricos'],
-                    text=['Abundancia recursos hidricos'],
+                    text=round(terr8['Abundancia']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Abundancia recursos hidricos',
                      marker = dict(color = 'yellow'),
                      orientation='h',
@@ -387,11 +340,8 @@ def update_graph(w_provincias, w_municipios):
                  go.Bar(
                     x = round(terr8['Riqueza.e']*100,0),
                     y = ['Riqueza de especies'],
-                    text=['Riqueza de especies'],
+                    text=round(terr8['Riqueza.e']*100,0),
                     textposition="auto",
-                    insidetextanchor="start",
-                    insidetextfont=dict(family='Times', size=13, ),
-                    outsidetextfont=dict(family='Times', size=13, ),
                      name = 'Riqueza de especies',
                      marker = dict(color = 'yellow'),
                      orientation='h',
@@ -399,32 +349,16 @@ def update_graph(w_provincias, w_municipios):
                  go.Bar(
                     x = round(terr8['Captura.c']*100,0) ,
                     y = ['captura carbono biomasa'],
-                        text=['captura carbono biomasa'],
-                        textposition="auto",
-                        insidetextanchor="start",
-                        insidetextfont=dict(family='Times', size=13, ),
-                        outsidetextfont=dict(family='Times', size=13, ),
-                    
+                    text=round(terr8['Captura.c']*100,0),
                      name = 'captura carbono biomasa',
                      marker = dict(color = 'yellow'),
                      orientation='h',
                  ),
-                # go.Bar(
-                #     x=[20, 14, 23],
-                #     y=['captura carbono biomasa', 'Riqueza de especies', 'Restricciones a actividades productivas'],
-                #     orientation='h',
-                #     # define the annotations
-                #     text=['captura carbono biomasa', 'Riqueza de especies', 'Restricciones a actividades productivas'],
-                #     # position, "auto", "inside" or "outside"
-                #     textposition="auto",
-                #     # anchor could be "start" or "end"
-                #     insidetextanchor="start",
-                #     insidetextfont=dict(family='Times', size=13, color='white'),
-                #     outsidetextfont=dict(family='Times', size=13, color='white')
-                # ),
             ],
 
         'layout': go.Layout(
+            margin=dict(l=250, r=120, t=50, b=50),
+            margin_pad=10,
             plot_bgcolor = '#010915',
             paper_bgcolor = '#010915',
             title = {
@@ -437,9 +371,21 @@ def update_graph(w_provincias, w_municipios):
                 'color': 'white',
                 'size': 20},
             hovermode = 'y',
-            yaxis=dict(
-                    showticklabels=False,
-                ),
+
+            yaxis = dict(title = '',
+                         color = 'white',
+                         showline = True,
+                         showgrid = True,
+                         showticklabels = True,
+                         linecolor = 'white',
+                         linewidth = 2,
+                         ticks = 'outside',
+                         tickfont = dict(
+                             family = 'Arial',
+                             size = 12,
+                             color = 'white'
+                         )
+            ),
             legend = {
                 'orientation': 'h',
                 'bgcolor': '#010915',
