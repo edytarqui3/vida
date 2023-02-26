@@ -1,13 +1,14 @@
 import dash
 from dash import dcc
 from dash import html
-from dash.dependencies import Input, Output
-import plotly.graph_objs as go
+import plotly.express as px
 import pandas as pd
-
+from dash.dependencies import Input, Output, State
+import base64
+import plotly.graph_objects as go
+# import plotly.graph_objs as go
+import pandas as pd
 import dash_leaflet as dl
-import dash_leaflet.express as dlx
-from dash_extensions.javascript import arrow_function
 
 terr2 = pd.read_csv('database.csv')
 region = terr2['DEPARTAMENTO'].unique()
@@ -15,61 +16,36 @@ region = terr2['DEPARTAMENTO'].unique()
 location1 = terr2[['MUNICIPIO', 'latitude', 'longitude']]
 list_locations = location1.set_index('MUNICIPIO')[['latitude', 'longitude']]
 
-zoom_min, zoom_max, zoom0 = 1, 18, 6  # min/max zoom levels might depend on the tiles used
-keys = ["watercolor", "toner", "terrain"]
-url_template = "http://{{s}}.tile.stamen.com/{}/{{z}}/{{x}}/{{y}}.png"
-attribution = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, ' \
-              '<a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data ' \
-              '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 
-app = dash.Dash(__name__, )
-app.layout = html.Div([
-html.Div([
-        html.Div([
-            html.Img(src=app.get_asset_url('logo01.png'),
-                     id='mmaya-image',
-                     style={
-                         "height": "70px",
-                         "width": "auto",
-                         "margin-bottom": "25px",
-                     },
-                     )
-        ],
-            className="one-third column",
-        ),
-        html.Div([
-             html.Img(src=app.get_asset_url('madre-tierra.png'),
-                     id='madre-tierra-image',
-                     style={
-                         "height": "70px",
-                         "width": "auto",
-                         "margin-bottom": "25px",
-                     },
-                     )
-        ], className="one-half column", id="title9"),
+external_stylesheets = [
+    {'src': 'https://codepen.io/chriddyp/pen/bWLwgP.css'},
+    {'src':'assets/s1.css'},
+    {'src':'assets/style.css'},
+]
+# external JavaScript files
+external_scripts = [
+    {'src': 'https://cdn.polyfill.io/v2/polyfill.min.js'},
+    {'src': 'https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js'},
+    {'src':'assets/jQuery.printarea/canvas2image.js'},
+    {'src':'assets/jsPDF-master/dist/jspdf.min.js'},
+    {'src':'assets/FileSaver.js-master/dist/FileSaver.min.js'}
+]
 
-        html.Div([
-          html.Img(src=app.get_asset_url('giz.png'),
-                     id='giz-image',
-                     style={
-                         "height": "70px",
-                         "width": "auto",
-                         "margin-bottom": "25px",
-                     },
-                     )
+app = dash.Dash(__name__, external_scripts=external_scripts, external_stylesheets=external_stylesheets)
 
-        ], className="one-half column", id='title10'),
+# assume you have a "long-form" data frame
+# see https://plotly.com/python/px-arguments/ for more options
 
-    ], id="header2", className="row flex-display", style={"margin-bottom": "25px"}),
+app.layout = html.Div(children=[
     html.Div([
         html.Div([
             html.Div([
                 html.H3('MÓDULO DEL INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 
-                style = {"margin-bottom": "0px", 'color': 'black'}),
+                style = { 'color': 'black'}),
             ]),
         ], className = "six column", id = "title4")
 
-    ], id = "header", className = "row flex-display", style = {"margin-bottom": "25px"}),
+    ], id = "header", className = "row flex-display"),
     html.Div([
         html.Div([
             html.P('Seleccione Departamento:', className = 'fix_label', style = {'color': 'white'}),
@@ -82,9 +58,7 @@ html.Div([
                          placeholder = 'Seleccione Departamento',
                          options = [{'label': c, 'value': c}
                                     for c in region], className = 'dcc_compon'),
-        ],
-            className="create_container one-half column",
-        ),
+        ], className="create_container one-half column",),
         html.Div([
              html.P('Seleccione Provincia:', className = 'fix_label', style = {'color': 'white'}),
             dcc.Dropdown(id = 'w_provincias',
@@ -109,24 +83,24 @@ html.Div([
 
         ], className="create_container one-half column", id='title1'),
 
-    ], id="header5", className="row flex-display", style={"margin-bottom": "25px"}),
+    ], id="header5", className="row flex-display",),
     html.Div([
         html.Div([
-                html.H6('Resultados', style = {"margin-top": "0px", 'color': 'white','size': 10}),
-                html.H6(id='clasificacion_txt', style = {"margin-top": "0px", 'color': 'white','size': 10}),
-                html.Button('imprimir Pdf', id='run'),
+                html.H6('Resultados', style = { 'color': 'white','size': 10}),
+                html.H6(id='indice_txt', style = {'color': 'white','size': 10}),
+                html.H6(id='clasificacion_txt', style = {'color': 'white','size': 10}),
+                html.Button('imprimir Pdf', id='button'),
             ], className = "create_container  columns"),
+    ], id = "header3", className = "row flex-display", ),
 
-        ], id = "header3", className = "row flex-display", style = {"margin-bottom": "25px"}),
+    html.Div([        
         html.Div([
-            
-                html.Div([
-                    dcc.Graph(id = 'bar_line_1',
-                            config = {'displayModeBar': False}),
-
-                ], className = "create_container seven columns"),
-
-            html.Div([              
+            dcc.Graph(
+                id='bar_line_1',
+                config = {'displayModeBar': False}
+            ),
+        ], className = "create_container seven columns"),
+        html.Div([              
                     dl.Map([
                             dl.LayersControl(
                                 [dl.BaseLayer(dl.TileLayer(id="base-layer-id"),) ] +
@@ -135,19 +109,100 @@ html.Div([
                         ],
                     id="map", style={'width': '100%', 'height': '100%', 'margin': "auto", "display": "block"}),
                 ], className = "create_container five columns"),
+    ], className = "row flex-display"),
+    html.Div(id='graph_img', hidden = True),
+    html.Div(id='graph_img_map', hidden = True)
+])
 
-        ], className = "row flex-display"),
-        html.Div([
+app.clientside_callback(
+    '''
+    function (chart_children) {
+        if (chart_children.type == "Img") {
+            console.log(chart_children);
+            var canvas = $('map').get(0); 
             
+            var logo_mmaya = new Image();
+                    logo_mmaya.src= 'assets/logo_mmaya2018.png';
+                    var mm_in_px = 3.77952755905511;
+                    var imgAncho = Math.round(10/mm_in_px);
+                    var imgAlto = Math.round(15/mm_in_px);
+                    var pageAncho = 279.4;
+                    var pageAlto = 215.9;
+                    var imgAnchoAux = 0;
+                    var imgAltoAux = 0;
+                    var puntoX = 0;
+
+                    if (imgAncho > 249) {
+                        imgAltoAux = imgAlto - 145.81;
+                        imgAlto = imgAlto - imgAltoAux;
+                        imgAnchoAux = imgAncho - imgAltoAux - (1.29 * imgAltoAux);
+                    } else {
+                        imgAltoAux = 145.81 - imgAlto;
+                        imgAlto = imgAlto + imgAltoAux;
+                        imgAnchoAux = imgAncho + imgAltoAux + (1.29 * imgAltoAux);
+                    }
+            puntoX = 14 + (pageAncho - imgAncho - 30)/2;
+            var pdf = new jsPDF({
+                            orientation: 'landscape',
+                            unit: 'mm',
+                            format: 'letter'
+                        });
+            var dataImg = null;
+           
+            pdf.setFontSize(12);
+            pdf.setFontType("bold");
+            pdf.text('Ministerio de Medio Ambiente y Agua', 102, 20);
+            pdf.setFontSize(10);
+            pdf.text('Autoridad Purinacional de la Madre Tierra', 102, 25);
+            pdf.text('SISTEMA DE INFORMACIÓN DE INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 81, 30);
+            pdf.text('REPORTE: ', 15, 47);
+            pdf.setFontType("italic");
+            pdf.text('El Municipio de '+$('#w_municipios').text()+' . ,Tiene una '+$('#clasificacion_txt').text()+' en relacion entre las caracteristicas del sistema de vida', 15, 52);
+            // pdf.text('Tiene una '+$('#clasificacion_txt').text()+' de relacion entre las caracteristicas del sistema de vida', 15, 56);
+            // pdf.text('En cuanto a las Funciones Ambientales,__ % del espacio geografico posee Aptitud.suelos para actividades agricolas,', 15, 56);
+            // pdf.text('Dentro de los Sistemas productivos sustentables,  el sector Turismo tiene un __% de participacion municipal ,', 15, 60);
+            // pdf.text('las actividades Piscicolas,entre crianza y pesca tienen un ', 15, 64);
+            // pdf.text('Referente a los Grados de Pobreza, de los servicios basicos el __% de la poblacion tiene Acceso a energia electrica,', 15, 68);
+            // pdf.text('seguido del __% tiene Acceso a vivienda.', 15, 72);
+            let date = new Date()
+
+                let day = date.getDate()
+                let month = date.getMonth() + 1
+                let year = date.getFullYear()
+                
+            pdf.addImage(logo_mmaya.src, 'PNG', 15, 15, 60, 18.3);
+            pdf.addImage(chart_children.props.src, 'PNG', 25, 70, 180, 100);//'PNG', 15, 54,200,imgAlto
+            // pdf.addImage(chart_children.props.src, 'PNG', 155, 90, 100, 50);//'PNG', 15, 54,200,imgAlto
+            pdf.save(`reporte-sistema-vida-${year}-${month}-${day}.pdf`);
+            
+        }
+        return 0;
+    }
+    ''',
+    Output('graph_img', 'n_clicks'),
+    [
+        Input('graph_img', 'children'),
+    ]
+)
 
 
-        ], className = "row flex-display"),
-
-
-
-], id = "mainContainer", style = {"display": "flex", "flex-direction": "column"})
-
-
+@app.callback(
+    Output('graph_img', 'children'),
+    [
+        Input('button', 'n_clicks')
+    ],
+    [
+        State('bar_line_1', 'figure')
+    ]
+)
+def figure_to_image(n_clicks, figure_dict):
+    if n_clicks:
+        # Higher scale = better resolution but also takes longer/larger size
+        figure = go.Figure(figure_dict)
+        img_uri = figure.to_image(format="png", scale=3)
+        src = "data:image/png;base64," + base64.b64encode(img_uri).decode('utf8')
+        return html.Img(src=src)
+    return ''
 @app.callback(
     Output('w_provincias', 'options'),
     Input('w_departamentos', 'value'))
@@ -173,6 +228,14 @@ def get_municipio_value(w_municipios):
     return [k['value'] for k in w_municipios][0]
 
 @app.callback(
+    Output('indice_txt', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    death = '' + terr5['porc_i.CSV'].astype(str).values + ' %'
+    return ' Indice de Caracterización :  '+death
+@app.callback(
     Output('clasificacion_txt', component_property='children'),
     [Input('w_provincias', 'value')],
     [Input('w_municipios', 'value')])
@@ -182,8 +245,7 @@ def get_clasificacion_value(w_provincias,w_municipios):
     thestring = ""
     for i in range(0,len(k)):
         thestring += k[i]
-    death = '' + terr5['porc_i.CSV'].astype(str).values + ' %'
-    return ' Indice de Caracterización :  '+death+'            Clasificación : '+thestring
+    return 'Clasificación : '+thestring
 @app.callback(Output('bar_line_1', 'figure'),
               [Input('w_provincias', 'value')],
               [Input('w_municipios', 'value')])
@@ -397,7 +459,6 @@ def update_graph(w_provincias, w_municipios):
                 showlegend=False
         )
     }
-
 @app.callback(Output('map', 'children'),
               [Input('w_provincias', 'value')],
               [Input('w_municipios', 'value')])
@@ -429,5 +490,6 @@ def update_mapa(w_provincias, w_municipios):
         ])
     ]
 
+
 if __name__ == '__main__':
-    app.run_server(debug = True)
+    app.run_server(debug=True)
