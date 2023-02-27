@@ -46,7 +46,7 @@ app.layout = html.Div(children=[
                      },)
         ], className=" one-half column",),
         html.Div([
-             html.Img(src=app.get_asset_url('madre-tierra.png'),
+             html.Img(src=app.get_asset_url('Madre-Tierra2.png'),
                      style={
                          "height": "80px",
                          "width": "auto",
@@ -185,11 +185,10 @@ app.clientside_callback(
             pdf.setFontType("italic");
             pdf.text('El Municipio de '+$('#w_municipios').text()+' . ,Tiene un '+$('#indice_txt').text()+' ', 15, 52);
             pdf.text('Tiene una '+$('#clasificacion_txt').text()+' de relacion entre las caracteristicas del sistema de vida', 15, 56);
-            // pdf.text('En cuanto a las Funciones Ambientales,__ % del espacio geografico posee Aptitud.suelos para actividades agricolas,', 15, 56);
-            // pdf.text('Dentro de los Sistemas productivos sustentables,  el sector Turismo tiene un __% de participacion municipal ,', 15, 60);
-            // pdf.text('las actividades Piscicolas,entre crianza y pesca tienen un ', 15, 64);
-            // pdf.text('Referente a los Grados de Pobreza, de los servicios basicos el __% de la poblacion tiene Acceso a energia electrica,', 15, 68);
-            // pdf.text('seguido del __% tiene Acceso a vivienda.', 15, 72);
+
+            pdf.text('El municipio de "'+$('#w_municipios').text()+'", de acuerdo a la valoracion de la caracterizacion de los Sistemas de Vida,', 15, 64);
+            pdf.text(' presenta las siguientes vocaciones productivas: ', 15, 68);
+           
             let date = new Date()
 
                 let day = date.getDate()
@@ -197,8 +196,7 @@ app.clientside_callback(
                 let year = date.getFullYear()
                 
             pdf.addImage(logo_mmaya.src, 'PNG', 15, 15, 60, 18.3);
-            pdf.addImage(chart_children.props.src, 'PNG', 20, 70, 150, 80);//'PNG', 15, 54,200,imgAlto
-            // pdf.addImage(chart_children.props.src, 'PNG', 155, 90, 100, 50);//'PNG', 15, 54,200,imgAlto
+            pdf.addImage(chart_children.props.src, 'PNG', 20, 70, 150, 80);
             pdf.save(`reporte-sistema-vida-${year}-${month}-${day}.pdf`);
             
         }
@@ -501,9 +499,6 @@ def update_mapa(w_provincias, w_municipios):
             dl.TileLayer(id="base-layer-id"),
             dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares",
                               activeColor="#214097", completedColor="#972158"),
-            dl.WMSTileLayer(url="http://siip.produccion.gob.bo:8080/geoserver/comAgrico/wms?service=WMS",
-                            layers="comAgrico:Riqueza_Especies_Biodiversidad", 
-                            format="image/png", transparent=True),
             # Marker with tool tip and popup
             # for i in range page_size:
             # create marker at i position long,lang
