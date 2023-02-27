@@ -6,7 +6,6 @@ import pandas as pd
 from dash.dependencies import Input, Output, State
 import base64
 import plotly.graph_objects as go
-# import plotly.graph_objs as go
 import pandas as pd
 import dash_leaflet as dl
 
@@ -51,7 +50,7 @@ app.layout = html.Div(children=[
                          "height": "80px",
                          "width": "auto",
                      },)
-        ], className=" one-half column", id="title3"),
+        ], className=" one-half column"),
 
         html.Div([
             html.Img(src=app.get_asset_url('giz.png'),
@@ -60,7 +59,7 @@ app.layout = html.Div(children=[
                          "width": "auto",
                      },)
 
-        ], className=" one-half column", id='title1'),
+        ], className=" one-half column"),
 
     ], className="row flex-display",),
     html.Div([
@@ -69,7 +68,7 @@ app.layout = html.Div(children=[
                 html.H3('MÓDULO DEL INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 
                 style = { 'color': 'black'}),
             ]),
-        ], className = "six column", id = "title4")
+        ], className = "six column")
 
     ], id = "header", className = "row flex-display"),
     html.Div([
@@ -95,7 +94,7 @@ app.layout = html.Div(children=[
                          value = 'Ingavi',
                          placeholder = 'Seleccione Provincia',
                          options = [], className = 'dcc_compon'),
-        ], className="create_container one-half column", id="title3"),
+        ], className="create_container one-half column"),
 
         html.Div([
          html.P('Seleccione Municipio:', className = 'fix_label', style = {'color': 'white'}),
@@ -107,7 +106,7 @@ app.layout = html.Div(children=[
                          placeholder = 'Seleccione Municipio',
                          options = [], className = 'dcc_compon'),
 
-        ], className="create_container one-half column", id='title1'),
+        ], className="create_container one-half column"),
 
     ], className="row flex-display",),
     html.Div([
@@ -115,9 +114,12 @@ app.layout = html.Div(children=[
                 html.H6('Resultados', style = { 'color': 'white','size': 10}),
                 html.H6(id='indice_txt', style = {'color': 'white','size': 10}),
                 html.H6(id='clasificacion_txt', style = {'color': 'white','size': 10}),
-                html.Button('imprimir Pdf', id='button'),
+                html.Button('Reporte', id='button'),
+                html.Br(),
+                html.A("Visor de Mapa", href='https://datos.siarh.gob.bo/index.php?module=agrobiodiversidad&smodule=geovisor', target="_blank"),
+                
             ], className = "create_container  columns"),
-    ], id = "header3", className = "row flex-display", ),
+    ], className = "row flex-display", ),
 
     html.Div([        
         html.Div([
@@ -130,7 +132,7 @@ app.layout = html.Div(children=[
                     dl.Map([
                             dl.LayersControl(
                                 [dl.BaseLayer(dl.TileLayer(id="base-layer-id"),) ] +
-                                [dl.Overlay(dl.LayerGroup(id="layer"), name="markers", checked=True)]
+                                [dl.Overlay(dl.LayerGroup(id="layer"), name="Municipios", checked=True)]
                             )
                         ],
                     id="map", style={'width': '100%', 'height': '100%', 'margin': "auto", "display": "block"}),
@@ -144,7 +146,6 @@ app.clientside_callback(
     '''
     function (chart_children) {
         if (chart_children.type == "Img") {
-            // console.log(chart_children);
             var canvas = $('map').get(0); 
             
             var logo_mmaya = new Image();
@@ -187,8 +188,7 @@ app.clientside_callback(
             pdf.text('Tiene una '+$('#clasificacion_txt').text()+' de relacion entre las caracteristicas del sistema de vida', 15, 56);
 
             pdf.text('El municipio de "'+$('#w_municipios').text()+'", de acuerdo a la valoracion de la caracterizacion de los Sistemas de Vida,', 15, 64);
-            pdf.text(' presenta las siguientes vocaciones productivas: ', 15, 68);
-           
+            pdf.text(' presenta las siguientes vocaciones productivas : ', 15, 68);
             let date = new Date()
 
                 let day = date.getDate()
@@ -221,7 +221,6 @@ app.clientside_callback(
 )
 def figure_to_image(n_clicks, figure_dict):
     if n_clicks:
-        # Higher scale = better resolution but also takes longer/larger size
         figure = go.Figure(figure_dict)
         img_uri = figure.to_image(format="png", scale=3)
         src = "data:image/png;base64," + base64.b64encode(img_uri).decode('utf8')
@@ -499,9 +498,6 @@ def update_mapa(w_provincias, w_municipios):
             dl.TileLayer(id="base-layer-id"),
             dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares",
                               activeColor="#214097", completedColor="#972158"),
-            # Marker with tool tip and popup
-            # for i in range page_size:
-            # create marker at i position long,lang
             dl.Marker(position=[zoom_lat, zoom_lon], children=[
                 dl.Popup([
                     html.H3('Indice de Caracterización de Vida: ' + terr3['porc_i.CSV'].astype(str) + ' %' ),
