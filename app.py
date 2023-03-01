@@ -115,9 +115,9 @@ app.layout = html.Div(children=[
                 html.H6(id='indice_txt', style = {'color': 'white','size': 10}),
                 html.H6(id='clasificacion_txt', style = {'color': 'white','size': 10}),
                 html.Button('Reporte', id='button'),
-                html.Br(),
-                html.A("Visor de Mapa", href='https://datos.siarh.gob.bo/index.php?module=agrobiodiversidad&smodule=geovisor', target="_blank"),
-                
+               # html.A("Visor de Mapa", href='https://datos.siarh.gob.bo/index.php?module=agrobiodiversidad&smodule=geovisor', target="_blank"),
+               # html.Br(),
+               # html.Button('Visor de Mapas', id='button2'),
             ], className = "create_container  columns"),
     ], className = "row flex-display", ),
 
@@ -138,6 +138,13 @@ app.layout = html.Div(children=[
                     id="map", style={'width': '100%', 'height': '100%', 'margin': "auto", "display": "block"}),
                 ], className = "create_container five columns"),
     ], className = "row flex-display"),
+    html.H6(id='txt_01', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_02', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_03', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_04', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_05', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_06', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_07', style = {'color': 'white','size': 10}, hidden = True),
     html.Div(id='graph_img', hidden = True),
     html.Div(id='graph_img_map', hidden = True)
 ])
@@ -146,10 +153,16 @@ app.clientside_callback(
     '''
     function (chart_children) {
         if (chart_children.type == "Img") {
-            var canvas = $('map').get(0); 
+            // console.log(chart_children);
+            // let pdfWindow = window.open("https://datos.siarh.gob.bo/index.php?module=agrobiodiversidad&smodule=geovisor",'' , 'location=no, menubar=no, status=no, resizable=no, toolbar=no ,width=1060,height=720');
+            //var canvas = $('map').get(0); 
             
             var logo_mmaya = new Image();
-                    logo_mmaya.src= 'assets/logo_mmaya2018.png';
+            var logo_madre = new Image();
+            var logo_giz = new Image();
+                    logo_mmaya.src= 'assets/logo01.png';
+                    logo_madre.src= 'assets/Madre-Tierra2.png';
+                    logo_giz.src= 'assets/Footer.png';
                     var mm_in_px = 3.77952755905511;
                     var imgAncho = Math.round(10/mm_in_px);
                     var imgAlto = Math.round(15/mm_in_px);
@@ -178,25 +191,42 @@ app.clientside_callback(
            
             pdf.setFontSize(12);
             pdf.setFontType("bold");
-            pdf.text('Ministerio de Medio Ambiente y Agua', 100, 20);
+            //pdf.text('Ministerio de Medio Ambiente y Agua', 100, 20);
             pdf.setFontSize(10);
-            pdf.text('Autoridad Purinacional de la Madre Tierra', 102, 25);
-            pdf.text('INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 81, 30);
-            pdf.text('REPORTE: ', 15, 47);
+            // pdf.text('Autoridad Purinacional de la Madre Tierra', 102, 25);
+            //pdf.text('INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 81, 30);
+            pdf.text('REPORTE: INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 35, 47);
             pdf.setFontType("italic");
+            /// pdf.text('El Municipio de '+$('#w_municipios').text()+' . ,Tiene un '+$('#indice_txt').text()+' ', 15, 52);
+            /// pdf.text('Tiene una '+$('#clasificacion_txt').text()+' de relacion entre las caracteristicas del sistema de vida', 15, 56);
+
+            /// pdf.text('El municipio de "'+$('#w_municipios').text()+'", de acuerdo a la valoracion de la caracterizacion de los Sistemas de Vida,', 15, 64);
+            /// pdf.text(' presenta las siguientes vocaciones productivas: ', 15, 68);
             pdf.text('El Municipio de '+$('#w_municipios').text()+' . ,Tiene un '+$('#indice_txt').text()+' ', 15, 52);
-            pdf.text('Tiene una '+$('#clasificacion_txt').text()+' de relacion entre las caracteristicas del sistema de vida', 15, 56);
+            pdf.text('En cuanto a las Funciones Ambientales,'+$('#txt_01').text()+' ,', 15, 56);
+            pdf.text('del espacio geografico posee  '+$('#txt_02').text()+'  para  actividades  agricolas,', 15, 60);
 
-            pdf.text('El municipio de "'+$('#w_municipios').text()+'", de acuerdo a la valoracion de la caracterizacion de los Sistemas de Vida,', 15, 64);
-            pdf.text(' presenta las siguientes vocaciones productivas : ', 15, 68);
+            pdf.text('Dentro  de los Sistemas  productivos  sustentables,  el  sector  Turismo,', 15, 68);
+            pdf.text('tiene  un  '+$('#txt_03').text()+'  de participacion  municipal ,las actividades Piscicolas,', 15, 72);
+            pdf.text('entre crianza  y  pesca tienen un  Referente  a  los Grados de  Pobreza,', 15, 76);
+            pdf.text('de los servicios basicos el '+$('#txt_04').text()+' de la poblacion tiene Acceso a energia ,', 15, 80);
+            pdf.text('electrica,  seguido  del '+$('#txt_05').text()+'  tiene  Acceso   a   vivienda.', 15, 84);
+
+            pdf.text('El municipio de "'+$('#w_municipios').text()+'",', 15, 92);
+            pdf.text('de acuerdo a la valoracion de la caracterización de los ,', 15, 96);
+            pdf.text('Sistemas de Vida presenta las', 15, 100);
+            pdf.text('siguientes vocaciones productivas:', 15, 104);
+
             let date = new Date()
-
-                let day = date.getDate()
-                let month = date.getMonth() + 1
-                let year = date.getFullYear()
+            let day = date.getDate()
+            let month = date.getMonth() + 1
+            let year = date.getFullYear()
                 
-            pdf.addImage(logo_mmaya.src, 'PNG', 15, 15, 60, 18.3);
-            pdf.addImage(chart_children.props.src, 'PNG', 20, 70, 150, 80);
+            pdf.addImage(logo_mmaya.src, 'PNG', 15, 15, 50, 18.3);
+            pdf.addImage(logo_madre.src, 'PNG', 75, 15, 50, 18.3);
+            pdf.addImage(logo_giz.src, 'PNG', 135, 15, 60, 18.3);
+            // pdf.addImage(chart_children.props.src, 'PNG', 20, 70, 150, 80);//'PNG', 15, 54,200,imgAlto
+            // pdf.addImage(chart_children.props.src, 'PNG', 155, 90, 100, 50);//'PNG', 15, 54,200,imgAlto
             pdf.save(`reporte-sistema-vida-${year}-${month}-${day}.pdf`);
             
         }
@@ -221,6 +251,7 @@ app.clientside_callback(
 )
 def figure_to_image(n_clicks, figure_dict):
     if n_clicks:
+        # Higher scale = better resolution but also takes longer/larger size
         figure = go.Figure(figure_dict)
         img_uri = figure.to_image(format="png", scale=3)
         src = "data:image/png;base64," + base64.b64encode(img_uri).decode('utf8')
@@ -269,6 +300,42 @@ def get_clasificacion_value(w_provincias,w_municipios):
     for i in range(0,len(k)):
         thestring += k[i]
     return 'Clasificación : '+thestring
+@app.callback(
+    Output('txt_01', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Captura.c'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_02', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Aptitud.s'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_03', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Turismo'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_04', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['_Acceso.en'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_05', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['_Acceso.vi'].astype(str).values + ' %'
+
 @app.callback(Output('bar_line_1', 'figure'),
               [Input('w_provincias', 'value')],
               [Input('w_municipios', 'value')])
