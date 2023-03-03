@@ -9,7 +9,7 @@ import plotly.graph_objects as go
 import pandas as pd
 import dash_leaflet as dl
 
-terr2 = pd.read_csv('database.csv')
+terr2 = pd.read_csv('database123.csv')
 region = terr2['DEPARTAMENTO'].unique()
 
 location1 = terr2[['MUNICIPIO', 'latitude', 'longitude']]
@@ -115,7 +115,7 @@ app.layout = html.Div(children=[
                 html.H6(id='indice_txt', style = {'color': 'white','size': 10}),
                 html.H6(id='clasificacion_txt', style = {'color': 'white','size': 10}),
                 html.Button('Reporte', id='button'),
-               # html.A("Visor de Mapa", href='https://datos.siarh.gob.bo/index.php?module=agrobiodiversidad&smodule=geovisor', target="_blank"),
+                html.A("Visor de Mapa", href='https://datos.siarh.gob.bo/index.php?module=agrobiodiversidad&smodule=geovisor', target="_blank"),
                # html.Br(),
                # html.Button('Visor de Mapas', id='button2'),
             ], className = "create_container  columns"),
@@ -164,7 +164,7 @@ app.clientside_callback(
                     logo_madre.src= 'assets/Madre-Tierra2.png';
                     logo_giz.src= 'assets/Footer.png';
                     var mm_in_px = 3.77952755905511;
-                    var imgAncho = Math.round(10/mm_in_px);
+                     var imgAncho = Math.round(10/mm_in_px);
                     var imgAlto = Math.round(15/mm_in_px);
                     var pageAncho = 279.4;
                     var pageAlto = 215.9;
@@ -191,17 +191,9 @@ app.clientside_callback(
            
             pdf.setFontSize(12);
             pdf.setFontType("bold");
-            //pdf.text('Ministerio de Medio Ambiente y Agua', 100, 20);
             pdf.setFontSize(10);
-            // pdf.text('Autoridad Purinacional de la Madre Tierra', 102, 25);
-            //pdf.text('INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 81, 30);
             pdf.text('REPORTE: INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 35, 47);
             pdf.setFontType("italic");
-            /// pdf.text('El Municipio de '+$('#w_municipios').text()+' . ,Tiene un '+$('#indice_txt').text()+' ', 15, 52);
-            /// pdf.text('Tiene una '+$('#clasificacion_txt').text()+' de relacion entre las caracteristicas del sistema de vida', 15, 56);
-
-            /// pdf.text('El municipio de "'+$('#w_municipios').text()+'", de acuerdo a la valoracion de la caracterizacion de los Sistemas de Vida,', 15, 64);
-            /// pdf.text(' presenta las siguientes vocaciones productivas: ', 15, 68);
             pdf.text('El Municipio de '+$('#w_municipios').text()+' . ,Tiene un '+$('#indice_txt').text()+' ', 15, 52);
             pdf.text('En cuanto a las Funciones Ambientales,'+$('#txt_01').text()+' ,', 15, 56);
             pdf.text('del espacio geografico posee  '+$('#txt_02').text()+'  para  actividades  agricolas,', 15, 60);
@@ -225,8 +217,6 @@ app.clientside_callback(
             pdf.addImage(logo_mmaya.src, 'PNG', 15, 15, 50, 18.3);
             pdf.addImage(logo_madre.src, 'PNG', 75, 15, 50, 18.3);
             pdf.addImage(logo_giz.src, 'PNG', 135, 15, 60, 18.3);
-            // pdf.addImage(chart_children.props.src, 'PNG', 20, 70, 150, 80);//'PNG', 15, 54,200,imgAlto
-            // pdf.addImage(chart_children.props.src, 'PNG', 155, 90, 100, 50);//'PNG', 15, 54,200,imgAlto
             pdf.save(`reporte-sistema-vida-${year}-${month}-${day}.pdf`);
             
         }
@@ -306,14 +296,14 @@ def get_clasificacion_value(w_provincias,w_municipios):
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
-    return ' ' + terr5['Captura.c'].astype(str).values + ' %'
+    return ' ' + terr5['Captura.ca'].astype(str).values + ' %'
 @app.callback(
     Output('txt_02', component_property='children'),
     [Input('w_provincias', 'value')],
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
-    return ' ' + terr5['Aptitud.s'].astype(str).values + ' %'
+    return ' ' + terr5['Ap.suelo'].astype(str).values + ' %'
 @app.callback(
     Output('txt_03', component_property='children'),
     [Input('w_provincias', 'value')],
@@ -327,14 +317,14 @@ def get_clasificacion_value(w_provincias,w_municipios):
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
-    return ' ' + terr5['_Acceso.en'].astype(str).values + ' %'
+    return ' ' + terr5['Acc.EE'].astype(str).values + ' %'
 @app.callback(
     Output('txt_05', component_property='children'),
     [Input('w_provincias', 'value')],
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
-    return ' ' + terr5['_Acceso.vi'].astype(str).values + ' %'
+    return ' ' + terr5['Acc.vivien'].astype(str).values + ' %'
 
 @app.callback(Output('bar_line_1', 'figure'),
               [Input('w_provincias', 'value')],
@@ -347,161 +337,161 @@ def update_graph(w_provincias, w_municipios):
         'data': [
                  go.Bar(
                     y = ['Acceso a energía eléctrica'],
-                    x = round(terr8['_Acceso.en']*100,0),orientation='h',
+                    x = terr8['Acc.EE'],orientation='h',
 
-                    text=round(terr8['_Acceso.en']*100,0),
+                    text=terr8['Acc.EE'],
                     textposition="auto",
                      name = 'Acceso a energía eléctrica',
                      marker = dict(color = '#9C0C38'),
                  ),
                   go.Bar(
                     y = ['Acceso a la Vivienda'],
-                    x = round(terr8['_Acceso.vi']*100,0),orientation='h',
+                    x = terr8['Acc.vivien'],orientation='h',
 
-                    text=round(terr8['_Acceso.vi']*100,0),
+                    text=terr8['Acc.vivien'],
                     textposition="auto",
                      name = 'Acceso a la Vivienda',
                      marker = dict(color = '#9C0C38'),
                  ),
                  go.Bar(
                     y = ['Acceso a educación'],
-                    x = round(terr8['_Acceso.ed']*100,0),orientation='h',
+                    x = terr8['Acc.edu'],orientation='h',
 
-                    text=round(terr8['_Acceso.ed']*100,0),
+                    text=terr8['Acc.edu'],
                     textposition="auto",
                      name = 'Acceso a educación',
                      marker = dict(color = '#9C0C38'),
                  ),
                  go.Bar(
                     y = ['Acceso a servicio de salud'],
-                    x = round(terr8['_Acceso.se']*100,0),orientation='h',
+                    x = terr8['Acc.salud'],orientation='h',
 
-                    text=round(terr8['_Acceso.se']*100,0),
+                    text=terr8['Acc.salud'],
                     textposition="auto",
                      name = 'Acceso a servicio de salud',
                      marker = dict(color = '#9C0C38'),
                  ),
                  go.Bar(
                     y = ['Acceso a servicio de agua'],
-                    x = round(terr8['_Acceso.h2o']*100,0),orientation='h',
+                    x = terr8['Acc.agua'],orientation='h',
 
-                    text=round(terr8['_Acceso.h2o']*100,0),
+                    text=terr8['Acc.agua'],
                     textposition="auto",
                      name = 'Acceso a servicio de agua',
                      marker = dict(color = '#9C0C38'),
                  ),
                   go.Bar(
                     y = ['Restricciones a actividades productivas'],
-                    x = round(terr8['_Restricci']*100,0),orientation='h',
+                    x = terr8['R.actv.prd'],orientation='h',
 
-                    text=round(terr8['_Restricci']*100,0),
+                    text=terr8['R.actv.prd'],
                     textposition="auto",
                      name = 'Restricciones a actividades productivas',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
                     y = ['Uso limitado y restringido'],
-                    x = round(terr8['_Uso.limit']*100,0),orientation='h',
+                    x = terr8['Uso.limit'],orientation='h',
 
-                    text=round(terr8['_Uso.limit']*100,0),
+                    text=terr8['Uso.limit'],
                     textposition="auto",
                      name = 'Uso limitado y restringido',
                      marker = dict(color = 'green'),
                  ),
                   go.Bar(
                     y = ['Aptitud Forestal'],
-                    x = round(terr8['_Aptitud.f']*100,0),orientation='h',
+                    x = terr8['Ap.fores'],orientation='h',
 
-                    text=round(terr8['_Aptitud.f']*100,0),
+                    text=terr8['Ap.fores'],
                     textposition="auto",
                      name = 'Aptitud Forestal',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
                     y = ['Agrosivopastoril'],
-                    x = round(terr8['_Agrosilvo']*100,0),orientation='h',
+                    x = terr8['Agrosilvo'],orientation='h',
 
-                    text=round(terr8['_Agrosilvo']*100,0),
+                    text=terr8['Agrosilvo'],
                     textposition="auto",
                      name = 'Agrosivopastoril',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
                     y = ['Agropecuario extensivo'],
-                    x = round(terr8['_Agropec_1']*100,0),orientation='h',
+                    x = terr8['Agro.exten'],orientation='h',
 
-                    text=round(terr8['_Agropec_1']*100,0),
+                    text=terr8['Agro.exten'],
                     textposition="auto",
                      name = 'Agropecuario extensivo',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
                     y = ['Agropecuario intensivo'],
-                    x = round(terr8['_Agropecua']*100,0),orientation='h',
+                    x = terr8['Agro.inten'],orientation='h',
 
-                    text=round(terr8['_Agropecua']*100,0),
+                    text=terr8['Agro.inten'],
                     textposition="auto",
                      name = 'Agropecuario intensivo',
                      marker = dict(color = 'green'),
                  ),
                  go.Bar(
                     y = ['Turismo'],
-                    x = round(terr8['Turismo']*100,0),
+                    x = terr8['Turismo'],
                     orientation='h',
-                    text=round(terr8['Turismo']*100,0),
+                    text=terr8['Turismo'],
                     textposition="auto",
                      name = 'Turismo',
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Piscícol']*100,0),
+                    x = terr8['Piscicol'],
                     y = ['Psicola'],
                     orientation='h',
-                    text=round(terr8['Piscícol']*100,0),
+                    text=terr8['Piscicol'],
                     textposition="auto",
                      name = 'Psicola',
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Minero']*100,0),
+                    x = terr8['Minero'],
                     y = ['Minero'],
                     orientation='h',
-                    text=round(terr8['Minero']*100,0),
+                    text=terr8['Minero'],
                     textposition="auto",
                      name = 'Minero',
                      marker = dict(color = 'blue'),
                  ),
                  go.Bar(
-                    x = round(terr8['Aptitud.s']*100,0),
+                    x = terr8['Ap.suelo'],
                     y = ['Aptitud de suelos'],
                     orientation='h',
-                    text=round(terr8['Aptitud.s']*100,0),
+                    text=terr8['Ap.suelo'],
                     textposition="auto",
                      name = 'Aptitud de suelos',
                      marker = dict(color = 'yellow'),
                  ),
                  go.Bar(
-                    x = round(terr8['Abundancia']*100,0),
+                    x = terr8['Abu.rrhh'],
                     y = ['Abundancia recursos hidricos'],
-                    text=round(terr8['Abundancia']*100,0),
+                    text=terr8['Abu.rrhh'],
                     textposition="auto",
                      name = 'Abundancia recursos hidricos',
                      marker = dict(color = 'yellow'),
                      orientation='h',
                  ),
                  go.Bar(
-                    x = round(terr8['Riqueza.e']*100,0),
+                    x = terr8['Riqueza.es'],
                     y = ['Riqueza de especies'],
-                    text=round(terr8['Riqueza.e']*100,0),
+                    text=terr8['Riqueza.es'],
                     textposition="auto",
                      name = 'Riqueza de especies',
                      marker = dict(color = 'yellow'),
                      orientation='h',
                  ),
                  go.Bar(
-                    x = round(terr8['Captura.c']*100,0) ,
+                    x = terr8['Captura.ca'] ,
                     y = ['captura carbono biomasa'],
-                    text=round(terr8['Captura.c']*100,0),
+                    text=terr8['Captura.ca'],
                      name = 'captura carbono biomasa',
                      marker = dict(color = 'yellow'),
                      orientation='h',
@@ -565,6 +555,9 @@ def update_mapa(w_provincias, w_municipios):
             dl.TileLayer(id="base-layer-id"),
             dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares",
                               activeColor="#214097", completedColor="#972158"),
+            # Marker with tool tip and popup
+            # for i in range page_size:
+            # create marker at i position long,lang
             dl.Marker(position=[zoom_lat, zoom_lon], children=[
                 dl.Popup([
                     html.H3('Indice de Caracterización de Vida: ' + terr3['porc_i.CSV'].astype(str) + ' %' ),
