@@ -129,22 +129,29 @@ app.layout = html.Div(children=[
             ),
         ], className = "create_container seven columns"),
         html.Div([              
-                    dl.Map([
-                            dl.LayersControl(
-                                [dl.BaseLayer(dl.TileLayer(id="base-layer-id"),) ] +
-                                [dl.Overlay(dl.LayerGroup(id="layer"), name="Municipios", checked=True)]
-                            )
-                        ],
-                    id="map", style={'width': '100%', 'height': '100%', 'margin': "auto", "display": "block"}),
+                    dcc.Graph(id = 'map_1',
+                        config = {'displayModeBar': 'hover'}),
                 ], className = "create_container five columns"),
     ], className = "row flex-display"),
-    html.H6(id='txt_01', style = {'color': 'white','size': 10}, hidden = True),
-    html.H6(id='txt_02', style = {'color': 'white','size': 10}, hidden = True),
-    html.H6(id='txt_03', style = {'color': 'white','size': 10}, hidden = True),
-    html.H6(id='txt_04', style = {'color': 'white','size': 10}, hidden = True),
-    html.H6(id='txt_05', style = {'color': 'white','size': 10}, hidden = True),
-    html.H6(id='txt_06', style = {'color': 'white','size': 10}, hidden = True),
-    html.H6(id='txt_07', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_municipio', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_01_ap_suelo', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_02_abu_rrhh', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_03_riq_espe', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_04_cap_carb', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_05_turismo', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_06_psicola', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_07_minero', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_08_agro_int', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_09_agro_ext', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_10_agrosilv', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_11_ap_fores', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_12_uso_limi', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_13_acc_ee', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_14_acc_vivienda', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_15_acc_educa', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_16_acc_salud', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_17_acc_agua', style = {'color': 'white','size': 10}, hidden = True),
+    html.H6(id='txt_18', style = {'color': 'white','size': 10}, hidden = True),
     html.Div(id='graph_img', hidden = True),
     html.Div(id='graph_img_map', hidden = True)
 ])
@@ -194,20 +201,35 @@ app.clientside_callback(
             pdf.setFontSize(10);
             pdf.text('REPORTE: INDICE DE CARACTERIZACIÓN DE SISTEMA DE VIDA - SMTCC', 35, 47);
             pdf.setFontType("italic");
-            pdf.text('El Municipio de '+$('#w_municipios').text()+' . ,Tiene un '+$('#indice_txt').text()+' ', 15, 52);
-            pdf.text('En cuanto a las Funciones Ambientales,'+$('#txt_01').text()+' ,', 15, 56);
-            pdf.text('del espacio geografico posee  '+$('#txt_02').text()+'  para  actividades  agricolas,', 15, 60);
+            pdf.text('El Municipio de "'+$('#txt_municipio').text()+'", posee un "'+$('#indice_txt').text()+'" ,es decir un(a)  '+$('#clasificacion_txt').text()+' de relacion ', 15, 52);
+            pdf.text('entre las caracteristicas del sistema de vida,En cuanto a las Funciones Ambientales,', 15, 56);
+            pdf.text(''+$('#txt_01_ap_suelo').text()+' del espacio geografico posee  ', 15, 60);
+            pdf.text(''+$('#txt_02_abu_rrhh').text()+'  para  actividades  agricolas,', 15, 64);
+            pdf.text('con el "'+$('#txt_02_abu_rrhh').text()+'" de (Abundancia de recursos hidricos)', 15, 68);
+            pdf.text('por otro lado,la Riqueza.es(Riquezas de Especies)', 15, 72);
+            pdf.text('del municipio cuenta con "'+$('#txt_03_riq_espe').text()+'" y una  (captura', 15, 76);
+            pdf.text('de Biomasa) del "'+$('#txt_04_cap_carb').text()+'".', 15, 80);
 
-            pdf.text('Dentro  de los Sistemas  productivos  sustentables,  el  sector  Turismo,', 15, 68);
-            pdf.text('tiene  un  '+$('#txt_03').text()+'  de participacion  municipal ,las actividades Piscicolas,', 15, 72);
-            pdf.text('entre crianza  y  pesca tienen un  Referente  a  los Grados de  Pobreza,', 15, 76);
-            pdf.text('de los servicios basicos el '+$('#txt_04').text()+' de la poblacion tiene Acceso a energia ,', 15, 80);
-            pdf.text('electrica,  seguido  del '+$('#txt_05').text()+'  tiene  Acceso   a   vivienda.', 15, 84);
+            pdf.text('Dentro  de los Sistemas  productivos  sustentables,', 15, 88);
+            pdf.text('el  sector  Turismo tiene  un "'+$('#txt_05_turismo').text()+'" de participacion  municipal ,', 15, 92);
+            pdf.text('las actividades Piscicolas,entre crianza y pesca tiene un "'+$('#txt_06_psicola').text()+'".', 15, 96);
+            pdf.text('El rubro Minero,principalmente de extraccion cuenta con el "'+$('#txt_07_minero').text()+'"', 15, 100);
+            
+            pdf.text('La distribucion geografica de la clasificacion (Agropecuario', 15, 108);
+            pdf.text('intensivo) tiene un "'+$('#txt_08_agro_int').text()+'" y la clasificacion de (Agropecuario Extensivo) con "'+$('#txt_09_agro_ext').text()+'".', 15, 112);
+            pdf.text('Las tierras destinadas al uso Agrosilvopastoril tienen el "'+$('#txt_10_agrosilv').text()+'" del', 15, 116);
+            pdf.text('territorio posee (Aptitud forestal) El "'+$('#txt_11_ap_fores').text()+'",esta destinado al,', 15, 120);
+            pdf.text('(Uso limitado y restringido) ,El "'+$('#txt_12_uso_limi').text()+'",dentro de las areas protegidas,', 15, 124);
+            pdf.text('en reservas forestales,en areas de inmovilizacion ', 15, 128);
+            pdf.text('y en servidumbres ecologicas.', 15, 132);
 
-            pdf.text('El municipio de "'+$('#w_municipios').text()+'",', 15, 92);
-            pdf.text('de acuerdo a la valoracion de la caracterización de los ,', 15, 96);
-            pdf.text('Sistemas de Vida presenta las', 15, 100);
-            pdf.text('siguientes vocaciones productivas:', 15, 104);
+            pdf.text('Referente a los Grados de Pobreza, de los servicios basicos el "'+$('#txt_13_acc_ee').text()+'"', 15, 140);
+            pdf.text('de la poblacion tiene  (Acceso a Energia Electrica), seguido del "'+$('#txt_14_acc_vivienda').text()+' "', 15, 144);
+            pdf.text('tiene  (Acceso a vivienda ).', 15, 148);
+            pdf.text('En cuanto a los servicios sociales, el "'+$('#txt_15_acc_educa').text()+'" de la poblacion tiene', 15, 152);
+            pdf.text('(Acceso a la educacion), el "'+$('#txt_16_acc_salud').text()+'"  a   (Servicios de Salud)', 15, 156);
+            pdf.text('y el "'+$('#txt_17_acc_agua').text()+'" de la poblacion tienen (Acceso a servicios de agua).', 15, 160);
+
 
             let date = new Date()
             let day = date.getDate()
@@ -217,6 +239,7 @@ app.clientside_callback(
             pdf.addImage(logo_mmaya.src, 'PNG', 15, 15, 50, 18.3);
             pdf.addImage(logo_madre.src, 'PNG', 75, 15, 50, 18.3);
             pdf.addImage(logo_giz.src, 'PNG', 135, 15, 60, 18.3);
+            pdf.addImage(chart_children.props.src, 'PNG', 130, 60, 70, 60);
             pdf.save(`reporte-sistema-vida-${year}-${month}-${day}.pdf`);
             
         }
@@ -236,7 +259,7 @@ app.clientside_callback(
         Input('button', 'n_clicks')
     ],
     [
-        State('bar_line_1', 'figure')
+        State('map_1', 'figure')
     ]
 )
 def figure_to_image(n_clicks, figure_dict):
@@ -291,40 +314,131 @@ def get_clasificacion_value(w_provincias,w_municipios):
         thestring += k[i]
     return 'Clasificación : '+thestring
 @app.callback(
-    Output('txt_01', component_property='children'),
+    Output('txt_municipio', component_property='children'),
     [Input('w_provincias', 'value')],
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
-    return ' ' + terr5['Captura.ca'].astype(str).values + ' %'
+    return '' + terr5['MUNICIPIO'].astype(str).values + ''
 @app.callback(
-    Output('txt_02', component_property='children'),
+    Output('txt_01_ap_suelo', component_property='children'),
     [Input('w_provincias', 'value')],
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
     return ' ' + terr5['Ap.suelo'].astype(str).values + ' %'
 @app.callback(
-    Output('txt_03', component_property='children'),
+    Output('txt_02_abu_rrhh', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Abu.rrhh'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_03_riq_espe', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Riqueza.es'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_04_cap_carb', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Captura.ca'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_05_turismo', component_property='children'),
     [Input('w_provincias', 'value')],
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
     return ' ' + terr5['Turismo'].astype(str).values + ' %'
 @app.callback(
-    Output('txt_04', component_property='children'),
+    Output('txt_06_psicola', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Piscicol'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_07_minero', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Minero'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_08_agro_int', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Agro.inten'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_09_agro_ext', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Agro.exten'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_10_agrosilv', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Agrosilvo'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_11_ap_fores', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Ap.fores'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_12_uso_limi', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Uso.limit'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_13_acc_ee', component_property='children'),
     [Input('w_provincias', 'value')],
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
     return ' ' + terr5['Acc.EE'].astype(str).values + ' %'
 @app.callback(
-    Output('txt_05', component_property='children'),
+    Output('txt_14_acc_vivienda', component_property='children'),
     [Input('w_provincias', 'value')],
     [Input('w_municipios', 'value')])
 def get_clasificacion_value(w_provincias,w_municipios):
     terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
     return ' ' + terr5['Acc.vivien'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_15_acc_educa', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Acc.edu'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_16_acc_salud', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Acc.salud'].astype(str).values + ' %'
+@app.callback(
+    Output('txt_17_acc_agua', component_property='children'),
+    [Input('w_provincias', 'value')],
+    [Input('w_municipios', 'value')])
+def get_clasificacion_value(w_provincias,w_municipios):
+    terr5 = terr2[(terr2['PROVINCIA'] == w_provincias) & (terr2['MUNICIPIO'] == w_municipios)]
+    return ' ' + terr5['Acc.agua'].astype(str).values + ' %'
 
 @app.callback(Output('bar_line_1', 'figure'),
               [Input('w_provincias', 'value')],
@@ -539,7 +653,7 @@ def update_graph(w_provincias, w_municipios):
                 showlegend=False
         )
     }
-@app.callback(Output('map', 'children'),
+@app.callback(Output('map_1', 'figure'),
               [Input('w_provincias', 'value')],
               [Input('w_municipios', 'value')])
 def update_mapa(w_provincias, w_municipios):
@@ -549,24 +663,37 @@ def update_mapa(w_provincias, w_municipios):
         zoom_lat = float(terr3.latitude.astype(float).mean())
         zoom_lon = float(terr3.longitude.astype(float).mean())
 
-    return [
-        dl.Map(style={'width': '100%', 'height': '100%'}, 
-            center=[zoom_lat, zoom_lon], zoom=10, children=[
-            dl.TileLayer(id="base-layer-id"),
-            dl.MeasureControl(position="topleft", primaryLengthUnit="kilometers", primaryAreaUnit="hectares",
-                              activeColor="#214097", completedColor="#972158"),
-            # Marker with tool tip and popup
-            # for i in range page_size:
-            # create marker at i position long,lang
-            dl.Marker(position=[zoom_lat, zoom_lon], children=[
-                dl.Popup([
-                    html.H3('Indice de Caracterización de Vida: ' + terr3['porc_i.CSV'].astype(str) + ' %' ),
-                    html.P('Municipio: ' + terr3['MUNICIPIO'].astype(str) + '')
-                ])
-            ])
-        ])
-    ]
+    return {
+        'data': [go.Scattermapbox(
+            lon = [f'{x:,.000000f}' for x in terr3['longitude']],
+            lat = [f'{y:,.000000f}' for y in terr3['latitude']],
+            mode = 'markers',
+            marker = go.scattermapbox.Marker(
+                 size=25,
+                 color='red',
+            ),
 
+            hoverinfo = 'text',
+            hovertext =
+            '<b>Departamento</b>: ' + terr3['DEPARTAMENTO'].astype(str) + '<br>' +
+            '<b>Provincia</b>: ' + terr3['PROVINCIA'].astype(str) + '<br>' +
+            '<b>Municipio</b>: ' + terr3['MUNICIPIO'].astype(str) + '<br>' +
+            '<b>Indice de Caracterización de Vida</b>: ' + terr3['porc_i.CSV'].astype(str) + ' %<br>' +
+            '<b>Clasificacion</b>: ' + terr3['Clasificac'].astype(str) + '<br>'
+        )],
+
+        'layout': go.Layout(
+            margin = {"r": 0, "t": 0, "l": 0, "b": 0},
+            hovermode='closest',
+            mapbox = dict(
+                accesstoken = 'pk.eyJ1IjoicXM2MjcyNTI3IiwiYSI6ImNraGRuYTF1azAxZmIycWs0cDB1NmY1ZjYifQ.I1VJ3KjeM-S613FLv3mtkw',  # Use mapbox token here
+                center = go.layout.mapbox.Center(lat = zoom_lat, lon = zoom_lon),
+                style='open-street-map',
+                zoom = zoom
+            ),
+            autosize = True,
+        )
+    }
 
 if __name__ == '__main__':
     app.run_server(debug=True)
