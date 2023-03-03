@@ -151,7 +151,6 @@ app.layout = html.Div(children=[
     html.H6(id='txt_15_acc_educa', style = {'color': 'white','size': 10}, hidden = True),
     html.H6(id='txt_16_acc_salud', style = {'color': 'white','size': 10}, hidden = True),
     html.H6(id='txt_17_acc_agua', style = {'color': 'white','size': 10}, hidden = True),
-    html.H6(id='txt_18', style = {'color': 'white','size': 10}, hidden = True),
     html.Div(id='graph_img', hidden = True),
     html.Div(id='graph_img_map', hidden = True)
 ])
@@ -160,9 +159,9 @@ app.clientside_callback(
     '''
     function (chart_children) {
         if (chart_children.type == "Img") {
-            // console.log(chart_children);
+            console.log(chart_children);
             // let pdfWindow = window.open("https://datos.siarh.gob.bo/index.php?module=agrobiodiversidad&smodule=geovisor",'' , 'location=no, menubar=no, status=no, resizable=no, toolbar=no ,width=1060,height=720');
-            //var canvas = $('map').get(0); 
+            // var canvas = $('map').get(0); 
             
             var logo_mmaya = new Image();
             var logo_madre = new Image();
@@ -194,7 +193,6 @@ app.clientside_callback(
                             unit: 'mm',
                             format: 'letter'
                         });
-            var dataImg = null;
            
             pdf.setFontSize(12);
             pdf.setFontType("bold");
@@ -229,7 +227,7 @@ app.clientside_callback(
             pdf.text('En cuanto a los servicios sociales, el "'+$('#txt_15_acc_educa').text()+'" de la poblacion tiene', 15, 152);
             pdf.text('(Acceso a la educacion), el "'+$('#txt_16_acc_salud').text()+'"  a   (Servicios de Salud)', 15, 156);
             pdf.text('y el "'+$('#txt_17_acc_agua').text()+'" de la poblacion tienen (Acceso a servicios de agua).', 15, 160);
-
+            
 
             let date = new Date()
             let day = date.getDate()
